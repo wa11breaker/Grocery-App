@@ -1,0 +1,3 @@
+class Offers{
+  String image;
+}
