@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -12,14 +13,33 @@
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="shortcut icon" type="image/png" href="favicon.png"/>
+  <link rel="shortcut icon" type="image/png" href="favicon.png" />
 
   <title>admin</title>
   <link rel="manifest" href="manifest.json">
 </head>
+
 <body>
   <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-firestore.js"></script>
+
+
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyA5Qi3JO-hiq8pHSCcfKUpVqSRmiA9ZZc0",
+      authDomain: "grocery-d08a2.firebaseapp.com",
+      databaseURL: "https://grocery-d08a2.firebaseio.com",
+      projectId: "grocery-d08a2",
+      storageBucket: "grocery-d08a2.appspot.com",
+      messagingSenderId: "167814762820",
+      appId: "1:167814762820:web:0112fd86a46ced30668711"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+  </script>
+
+
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {
@@ -27,22 +47,7 @@
       });
     }
   </script>
-
-<script>
-  // TODO: Replace the following with your app's Firebase project configuration.
-  // See: https://support.google.com/firebase/answer/7015592
-  var firebaseConfig = {
-  apiKey: "AIzaSyA5Qi3JO-hiq8pHSCcfKUpVqSRmiA9ZZc0",
-  authDomain: "grocery-d08a2.firebaseapp.com",
-  databaseURL: "https://grocery-d08a2.firebaseio.com",
-  projectId: "grocery-d08a2",
-  storageBucket: "grocery-d08a2.appspot.com",
-  messagingSenderId: "167814762820",
-  appId: "1:167814762820:web:0112fd86a46ced30668711"
-};
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-</script>
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
+
 </html>
