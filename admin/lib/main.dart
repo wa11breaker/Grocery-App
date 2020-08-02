@@ -1,9 +1,10 @@
+import 'package:admin/provider/category_items_switch.dart';
 import 'package:admin/provider/sign_in.dart';
 import 'package:admin/screens/home/home.dart';
-import 'package:admin/screens/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'provider/category_provider.dart';
+import 'provider/item_provider.dart';
 import 'provider/screen_index.dart';
 
 void main() {
@@ -36,6 +37,15 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<ScreenIndex>(
           create: (context) => ScreenIndex(),
+        ),
+        ChangeNotifierProvider<CategoryItemSwitch>(
+          create: (context) => CategoryItemSwitch(),
+        ),
+        ChangeNotifierProvider<CategoryProvider>(
+          create: (context) => CategoryProvider(),
+        ),
+        ChangeNotifierProvider<ItemProvider>(
+          create: (context) =>ItemProvider() ,
         )
       ],
       child: MaterialApp(
@@ -43,6 +53,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: primeColor,
             visualDensity: VisualDensity.adaptivePlatformDensity,
+            
           ),
           debugShowCheckedModeBanner: false,
           home: Home()

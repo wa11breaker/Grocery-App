@@ -1,7 +1,10 @@
 import 'package:admin/models/category_model.dart';
+import 'package:admin/provider/category_items_switch.dart';
+import 'package:admin/provider/item_provider.dart';
 import 'package:admin/utilities/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 
 class CategoryTile extends StatelessWidget {
   final CategoryModel categoryModel;
@@ -89,6 +92,12 @@ class CategoryTile extends StatelessWidget {
             ),
             actions: <Widget>[
               FlatButton(
+                child: Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
                 child: Text('Update'),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -103,7 +112,11 @@ class CategoryTile extends StatelessWidget {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: InkWell(
-        // onDoubleTap: () => _showMyDialog(),
+        onDoubleTap: () {
+          Provider.of<ItemProvider>(context, listen: false)
+              .setSelectedCategory(categoryModel);
+          Provider.of<CategoryItemSwitch>(context, listen: false).update(true);
+        },
         child: Container(
           // margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           // width: 100,

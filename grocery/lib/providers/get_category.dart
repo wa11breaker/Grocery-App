@@ -15,6 +15,7 @@ class GetCategory extends ChangeNotifier {
   }
 
   Future<void> getCategory() async {
+    loading(true);
     if (_category.length != 0) {
       Map<String, dynamic> tempBanners;
       await Firestore.instance
@@ -28,7 +29,6 @@ class GetCategory extends ChangeNotifier {
       for (var i in tempBanners['categoryList']) {
         _category.add(Categorys.fromMap(i));
       }
-      loading(true);
 
       loading(false);
     }

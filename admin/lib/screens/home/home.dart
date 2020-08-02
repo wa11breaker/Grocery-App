@@ -1,6 +1,7 @@
 import 'package:admin/provider/screen_index.dart';
 import 'package:admin/screens/banner/banners.dart';
 import 'package:admin/screens/category/category.dart';
+import 'package:admin/screens/category/select_category_icon.dart';
 import 'package:admin/screens/dashboard/dashboard.dart';
 import 'package:admin/screens/delivery_boy/delivery_boy.dart';
 import 'package:admin/screens/home/side_bar/side_bar.dart';
@@ -19,8 +20,8 @@ class _HomeState extends State<Home> {
   List<Widget> screen = [
     Dashboard(),
     Orders(),
-    Category(),
-    Items(),
+    SlelctCategoryItems(),
+   
     Banners(),
     DeleveryBoy()
   ];

@@ -23,10 +23,6 @@ class SideBar extends StatelessWidget {
         'title': 'CATEGORY',
       },
       {
-        'icon': Icons.list,
-        'title': 'ITEMS',
-      },
-      {
         'icon': Icons.view_carousel,
         'title': 'BANNER',
       },
@@ -35,32 +31,7 @@ class SideBar extends StatelessWidget {
         'title': 'DELIVERY BOYS',
       }
     ];
-    final List<Widget> items = [
-      NavItems(
-        icon: Icons.chrome_reader_mode,
-        title: 'DASHBOARD',
-      ),
-      NavItems(
-        icon: Icons.content_paste,
-        title: 'ORDERS',
-      ),
-      NavItems(
-        icon: Icons.category,
-        title: 'CATEGORY',
-      ),
-      NavItems(
-        icon: Icons.list,
-        title: 'ITEMS',
-      ),
-      NavItems(
-        icon: Icons.view_carousel,
-        title: 'BANNER',
-      ),
-      NavItems(
-        icon: Icons.directions_bike,
-        title: 'DELIVERY BOYS',
-      )
-    ];
+
     return Container(
       width: 200,
       height: double.infinity,
@@ -74,7 +45,7 @@ class SideBar extends StatelessWidget {
           ),
           ListView.builder(
             shrinkWrap: true,
-            itemCount: items.length,
+            itemCount: data.length,
             itemBuilder: (BuildContext context, int index) {
               return NavItems(
                 icon: data[index]['icon'],

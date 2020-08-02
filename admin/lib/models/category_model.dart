@@ -12,4 +12,12 @@ class CategoryModel {
   })  : assert(categoryName != null),
         assert(categoryId != null),
         assert(categoryImage != null);
+
+  factory CategoryModel.fromDoc(Map doc) {
+    return CategoryModel(
+      categoryId: doc['categoryId'],
+      categoryName: doc['categoryName'],
+      categoryImage: doc['categoryImage'],
+    );
+  }
 }
