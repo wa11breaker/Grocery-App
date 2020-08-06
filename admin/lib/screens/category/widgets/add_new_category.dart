@@ -171,9 +171,11 @@ class _AddNewCategoryState extends State<AddNewCategory> {
               },
             ),
             FlatButton(
-              child: Text('Add'),
-              onPressed: () => _upload(),
-            ),
+                child: Text('Add'),
+                onPressed: () {
+                  _upload();
+                  Navigator.pop(context);
+                }),
           ],
         );
       },
@@ -181,11 +183,11 @@ class _AddNewCategoryState extends State<AddNewCategory> {
   }
 
   _upload() {
-   Provider.of<CategoryProvider>(context,listen: false).addNewCategory(
+    Provider.of<CategoryProvider>(context, listen: false).addNewCategory(
       categoryId: _categoryId.text,
       categoryName: _categoryTitle.text,
       categoryImage:
-          'https://firebasestorage.googleapis.com/v0/b/grocery-d08a2.appspot.com/o/category%2Fchicken.png?alt=media',
+          'https://firebasestorage.googleapis.com/v0/b/grocery-d08a2.appspot.com/o/category%2Fmeat.png?alt=media',
     );
 
     _categoryId.clear();

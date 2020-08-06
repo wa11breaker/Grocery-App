@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:grocery/models/item.dart';
 import 'package:grocery/utilities/color.dart';
 
 class ItemDetailes extends StatelessWidget {
+  final ItemModle item;
+
+  const ItemDetailes({Key key, this.item}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -14,8 +18,8 @@ class ItemDetailes extends StatelessWidget {
             Container(
               height: height / 2.5,
               width: double.infinity,
-              decoration: BoxDecoration(color: lightGrey),
-              child: Icon(Icons.ac_unit),
+              decoration: BoxDecoration(color: Colors.white),
+              child: Image.network(item.imgUrl),
             ),
             SingleChildScrollView(
               child: Column(
@@ -30,7 +34,7 @@ class ItemDetailes extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: lightGrey,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(16),
                         topRight: Radius.circular(16),
@@ -40,14 +44,14 @@ class ItemDetailes extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'JBL C50HI Wired Headset  (Blue, Wired in the ear)',
+                          item.title,
                           style: Theme.of(context).textTheme.headline5,
                         ),
                         SizedBox(
                           height: 8,
                         ),
                         Text(
-                          '₹498',
+                          '₹' + item.price.toString(),
                           style: Theme.of(context)
                               .textTheme
                               .headline5
@@ -57,7 +61,7 @@ class ItemDetailes extends StatelessWidget {
                           height: 16,
                         ),
                         Text(
-                          'Say hello to an enhanced music experience with the JBL C50HI Wired Headset with Mic. With features, such as True Bass, Voice-assistant support, stylish looks and JBL Signature Sound, you will never want to be without these earphones.',
+                          item.description,
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2

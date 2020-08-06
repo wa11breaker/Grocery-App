@@ -9,9 +9,9 @@ class Categorys {
   });
   factory Categorys.fromMap(Map data) {
     return Categorys(
-      id: data['id'],
-      name: data['name'],
-      image: data['image'],
+      id: data['categoryId'],
+      name: data['categoryName'],
+      image: data['categoryImage'],
     );
   }
 }

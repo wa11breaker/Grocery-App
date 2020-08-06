@@ -5,7 +5,7 @@ class ItemModel {
   final String name;
   final String image;
   final String description;
-  final String price;
+  final int price;
   final String unit;
   final String status;
 
@@ -29,7 +29,7 @@ class ItemModel {
     return ItemModel(
       categoryId: doc['categoryId'],
       name: doc['name'],
-      image: doc['image'],
+      image: doc['image'] ?? '',
       description: doc['description'],
       price: doc['price'],
       status: doc['status'],

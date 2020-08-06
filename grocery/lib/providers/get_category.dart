@@ -3,10 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:grocery/models/category.dart';
 
 class GetCategory extends ChangeNotifier {
-  List<Categorys> _category;
+  List<Categorys> _category = List();
   List<Categorys> get category => _category;
 
-  bool _loadingCategory;
+  bool _loadingCategory = true;
   bool get loadingCategory => _loadingCategory;
 
   void loading(bool status) {
@@ -15,20 +15,16 @@ class GetCategory extends ChangeNotifier {
   }
 
   Future<void> getCategory() async {
-    loading(true);
-    if (_category.length != 0) {
-      Map<String, dynamic> tempBanners;
+    if (_category.length == 0) {
       await Firestore.instance
           .collection('container')
-          .document('categorys')
+          .document('category')
           .get()
-          .then(
-            (value) => tempBanners = value.data,
-          );
-
-      for (var i in tempBanners['categoryList']) {
-        _category.add(Categorys.fromMap(i));
-      }
+          .then((doc) {
+        for (var i in doc.data['categoryList']) {
+          _category.add(Categorys.fromMap(i));
+        }
+      });
 
       loading(false);
     }

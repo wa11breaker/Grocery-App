@@ -28,7 +28,7 @@ class _LoginState extends State<Login> {
               color: primaryColor,
               child: Center(
                 child: FlutterLogo(
-                  colors: Colors.grey,
+                  textColor: Colors.grey,
                   size: 100,
                 ),
               ),
@@ -36,7 +36,7 @@ class _LoginState extends State<Login> {
           ),
           Expanded(
             flex: 2,
-                      child: Consumer<SingnIn>(
+            child: Consumer<SingnIn>(
               builder: (context, value, child) => AutofillGroup(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),

@@ -1,11 +1,9 @@
 import 'package:admin/provider/screen_index.dart';
 import 'package:admin/screens/banner/banners.dart';
-import 'package:admin/screens/category/category.dart';
 import 'package:admin/screens/category/select_category_icon.dart';
 import 'package:admin/screens/dashboard/dashboard.dart';
 import 'package:admin/screens/delivery_boy/delivery_boy.dart';
 import 'package:admin/screens/home/side_bar/side_bar.dart';
-import 'package:admin/screens/items/items.dart';
 import 'package:admin/screens/orders/orders.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +19,6 @@ class _HomeState extends State<Home> {
     Dashboard(),
     Orders(),
     SlelctCategoryItems(),
-   
     Banners(),
     DeleveryBoy()
   ];
@@ -52,5 +49,4 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-
 }

@@ -1,6 +1,7 @@
 import 'package:admin/provider/category_items_switch.dart';
 import 'package:admin/provider/sign_in.dart';
 import 'package:admin/screens/home/home.dart';
+import 'package:admin/screens/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'provider/category_provider.dart';
@@ -45,24 +46,24 @@ class MyApp extends StatelessWidget {
           create: (context) => CategoryProvider(),
         ),
         ChangeNotifierProvider<ItemProvider>(
-          create: (context) =>ItemProvider() ,
+          create: (context) => ItemProvider(),
         )
       ],
       child: MaterialApp(
-          title: 'Admin',
-          theme: ThemeData(
-            primarySwatch: primeColor,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-            
-          ),
-          debugShowCheckedModeBanner: false,
-          home: Home()
+        title: 'Admin',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        debugShowCheckedModeBanner: false,
+        home: //Home()
 
-          // Consumer<SingnIn>(
-          //   builder: (context, value, child) =>
-          //       value.signInSuccess ? Home() : Login(),
-          // ),
-          ),
+            Consumer<SingnIn>(
+          builder: (context, value, child) =>
+              !value.signInSuccess ? Home() : Login(),
+        ),
+      ),
     );
   }
 }
+//? flutter run --release -d chrome -v

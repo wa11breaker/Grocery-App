@@ -40,6 +40,12 @@ class CategoryProvider extends ChangeNotifier {
         'categoryImage': categoryImage,
       }));
       notifyListeners();
+      Firestore.instance
+          .collection('container')
+          .document('items')
+          .collection('category')
+          .document(categoryId)
+          .setData({'exists': true});
     });
   }
 }

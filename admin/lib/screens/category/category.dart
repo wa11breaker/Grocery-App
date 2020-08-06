@@ -13,33 +13,28 @@ class Category extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'All Category',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-              ),
-              SizedBox(
-                height: 32,
-              ),
-              Consumer<CategoryProvider>(
-                builder: (context, values, child) {
-                  return Wrap(
-                    children: [
-                      AddNewCategory(),
-                      ...values.categoryList
-                          .map((e) => CategoryTile(
-                                categoryModel: e,
-                              ))
-                          .toList(),
-                    ],
-                    runSpacing: 32,
-                    spacing: 32,
-                  );
-                },
-              ),
-            ],
+          Text(
+            'All Category',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+          ),
+          SizedBox(
+            height: 32,
+          ),
+          Consumer<CategoryProvider>(
+            builder: (context, values, child) {
+              return Wrap(
+                children: [
+                  AddNewCategory(),
+                  ...values.categoryList
+                      .map((e) => CategoryTile(
+                            categoryModel: e,
+                          ))
+                      .toList(),
+                ],
+                runSpacing: 32,
+                spacing: 32,
+              );
+            },
           ),
         ],
       ),

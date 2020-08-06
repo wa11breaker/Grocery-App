@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grocery/providers/get_banners.dart';
+import 'package:grocery/providers/get_category.dart';
 import 'package:grocery/screens/cart/cart.dart';
 import 'package:grocery/screens/home/home.dart';
 import 'package:grocery/screens/profile/profile.dart';
@@ -16,6 +17,7 @@ class _RootState extends State<Root> {
   void initState() {
     super.initState();
     Provider.of<GetBanners>(context, listen: false).getBanners();
+    Provider.of<GetCategory>(context, listen: false).getCategory();
   }
 
   static final List _bottomNavigationWidgets = [

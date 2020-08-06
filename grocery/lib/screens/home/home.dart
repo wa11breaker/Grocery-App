@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:grocery/providers/login_provider.dart';
-import 'package:provider/provider.dart';
-
-import 'widgets/grid_view.dart';
 import 'widgets/banners.dart';
 import 'widgets/filter_widget.dart';
 
@@ -41,7 +37,7 @@ class HomeScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline5,
                 ),
               ),
-              PopularProductGrid(),
+              // PopularProductGrid(),
             ],
           ),
         ),
