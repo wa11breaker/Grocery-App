@@ -24,7 +24,7 @@ class FilterProvider extends ChangeNotifier {
   // ignore: unused_field
   List<ItemModle> filterList = [
     ItemModle(
-      id: 'fhj1',
+      id: 'fhj671',
       description:
           'Coconut is a very stable fruit. It is a mature fruit of the cocos nucifera palm. The fruit is nearly spherical to oval in shape and measure between 5-10 inches in width. Its rough external husk is light green, and turns gray as the nut grown-up. The husk is about 1-2 inches in thickness and made of tough fibers. ',
       imgUrl:
@@ -35,7 +35,7 @@ class FilterProvider extends ChangeNotifier {
       unit: '1 pc',
     ),
     ItemModle(
-      id: 'fhj1',
+      id: 'fh678j1',
       description:
           'The bright red coloured and heart shaped Red Delicious apples are crunchy, juicy and slightly sweet. Red Delicious Apples are a natural source of fibre and are fat free. They contain a wide variety of anti-oxidants and polynutrients. ',
       imgUrl:
@@ -46,7 +46,7 @@ class FilterProvider extends ChangeNotifier {
       unit: '1 pc',
     ),
     ItemModle(
-      id: 'rty',
+      id: 'r56ty',
       description:
           'Coconut is a very stable fruit. It is a mature fruit of the cocos nucifera palm. The fruit is nearly spherical to oval in shape and measure between 5-10 inches in width. Its rough external husk is light green, and turns gray as the nut grown-up. The husk is about 1-2 inches in thickness and made of tough fibers. ',
       imgUrl:

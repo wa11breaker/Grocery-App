@@ -6,6 +6,7 @@ import 'package:grocery/screens/home/home.dart';
 import 'package:grocery/screens/profile/profile.dart';
 import 'package:grocery/utilities/color.dart';
 import 'package:provider/provider.dart';
+import 'package:grocery/providers/user_info.dart';
 
 class Root extends StatefulWidget {
   @override
@@ -22,7 +23,7 @@ class _RootState extends State<Root> {
 
   static final List _bottomNavigationWidgets = [
     HomeScreen(),
-    Cart(),
+    CartScreen(),
     Profile()
   ];
   int _navigationIndex = 0;

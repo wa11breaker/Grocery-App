@@ -2,8 +2,9 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery/main.dart';
-import 'package:grocery/screens/_init/root.dart';
+import 'package:grocery/providers/user_info.dart';
+import 'package:grocery/services/shared_prefs.dart';
+import 'package:provider/provider.dart';
 
 class LoginWithPhone extends ChangeNotifier {
   String _phoneNumber;
@@ -74,7 +75,7 @@ class LoginWithPhone extends ChangeNotifier {
 
   Future<void> verifyPhone() async {
     final PhoneVerificationCompleted verified = (AuthCredential authResult) {
-      signIn(authResult,null);
+      signIn(authResult, null);
     };
 
     final PhoneVerificationFailed verificationfailed =
@@ -116,15 +117,16 @@ class LoginWithPhone extends ChangeNotifier {
   signIn(AuthCredential authCreds, BuildContext context) {
     FirebaseAuth.instance.signInWithCredential(authCreds).then((value) async {
       if (value.user != null && context != null) {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Root()));
+        Provider.of<UserData>(context, listen: false)
+            .setUserId(value.user.uid, value.user.phoneNumber);
+        SharedPrefs().saveUserId(value.user.uid);
       }
     });
   }
 
   signOut(BuildContext context) {
     FirebaseAuth.instance.signOut();
-  //  Navigator.pushReplacement(
-  //           context, MaterialPageRoute(builder: (context) => MyApp()));
+    //  Navigator.pushReplacement(
+    //           context, MaterialPageRoute(builder: (context) => MyApp()));
   }
 }

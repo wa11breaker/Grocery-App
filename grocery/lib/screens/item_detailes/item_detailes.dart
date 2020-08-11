@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:grocery/models/item.dart';
+import 'package:grocery/providers/cart.dart';
+import 'package:grocery/screens/cart/cart.dart';
 import 'package:grocery/utilities/color.dart';
+import 'package:provider/provider.dart';
 
 class ItemDetailes extends StatelessWidget {
   final ItemModle item;
@@ -14,109 +17,169 @@ class ItemDetailes extends StatelessWidget {
       appBar: AppBar(),
       body: SafeArea(
         child: Stack(
-          children: <Widget>[
-            Container(
-              height: height / 2.5,
-              width: double.infinity,
-              decoration: BoxDecoration(color: Colors.white),
-              child: Image.network(item.imgUrl),
-            ),
+          children: [
             SingleChildScrollView(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  SizedBox(
-                    height: height / 2.5,
-                  ),
-                  Container(
-                    height: (height -
-                        MediaQuery.of(context).padding.top -
-                        height / 2.5),
-                    padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: lightGrey,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(16),
-                        topRight: Radius.circular(16),
+                  Column(
+                    children: [
+                      Container(
+                        height: height / 3,
+                        width: double.infinity,
+                        decoration: BoxDecoration(color: Colors.white),
+                        child: Image.network(item.imgUrl),
                       ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: lightGrey,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(16),
+                            topRight: Radius.circular(16),
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              item.title,
+                              style: Theme.of(context).textTheme.headline5,
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Text(
+                              '₹' + item.price.toString(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5
+                                  .copyWith(color: primaryColor),
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Text(
+                              item.description,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2
+                                  .copyWith(height: 1.7),
+                            ),
+                            SizedBox(
+                              height: 87,
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Consumer<Cart>(
+                builder: (context, value, _) => Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                  child: SizedBox(
+                    height: 55,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          item.title,
-                          style: Theme.of(context).textTheme.headline5,
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          '₹' + item.price.toString(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline5
-                              .copyWith(color: primaryColor),
-                        ),
-                        SizedBox(
-                          height: 16,
-                        ),
-                        Text(
-                          item.description,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2
-                              .copyWith(height: 1.7),
-                        ),
-                        SizedBox(
-                          height: 16,
-                        ),
-                        Spacer(),
-                        SizedBox(
-                          height: 55,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Container(
-                                height: 55,
-                                width: 55,
-                                decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Icon(
-                                  Icons.shopping_cart,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 16,
-                              ),
-                              Expanded(
-                                child: Container(
+                        GestureDetector(
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CartScreen())),
+                          child: Container(
+                            height: 55,
+                            width: 55,
+                            padding: const EdgeInsets.all(8),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: primaryColor,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Stack(
+                              children: [
+                                Align(
                                   alignment: Alignment.center,
-                                  height: 55,
-                                  decoration: BoxDecoration(
-                                    color: primaryColor,
-                                    borderRadius: BorderRadius.circular(8),
+                                  child: Icon(
+                                    Icons.shopping_cart,
+                                    color: Colors.white,
                                   ),
-                                  child: Text(
-                                    'Buy Now',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
+                                ),
+                                value.cartItemList.length > 0
+                                    ? Align(
+                                        alignment: Alignment.topRight,
+                                        child: Container(
+                                          height: 12,
+                                          width: 12,
+                                          decoration: BoxDecoration(
+                                            color: Colors.red,
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                      )
+                                    : SizedBox.shrink()
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        value.cartItemList.indexWhere(
+                                    (element) => element.id == item.id) ==
+                                -1
+                            ? Expanded(
+                                child: GestureDetector(
+                                  onTap: () => value.addToCart(item),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: 55,
+                                    decoration: BoxDecoration(
+                                      color: primaryColor,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      'Buy Now',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ),
                               )
-                            ],
-                          ),
-                        )
+                            : Expanded(
+                                child: GestureDetector(
+                                  onTap: () => value.addToCart(item),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: 55,
+                                    decoration: BoxDecoration(
+                                      color: primaryColor,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      'Added',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
                       ],
                     ),
-                  )
-                ],
+                  ),
+                ),
               ),
-            ),
+            )
           ],
         ),
       ),

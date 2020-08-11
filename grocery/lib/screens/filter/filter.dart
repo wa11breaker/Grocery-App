@@ -20,6 +20,7 @@ class _FilterState extends State<Filter> {
     Provider.of<FilterProvider>(context, listen: false).getFilterResult('');
     return Consumer<FilterProvider>(
       builder: (context, filter, child) => Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text(
             widget.category.name,

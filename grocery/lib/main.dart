@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:grocery/providers/cart.dart';
 import 'package:grocery/providers/filter_grid.dart';
 import 'package:grocery/screens/_init/root.dart';
 import 'package:grocery/screens/login/login.dart';
@@ -8,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'providers/get_banners.dart';
 import 'providers/get_category.dart';
 import 'providers/login_provider.dart';
+import 'providers/user_info.dart';
 import 'utilities/appStrings.dart';
 import 'utilities/color.dart';
 
@@ -33,6 +35,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<GetCategory>(
           create: (context) => GetCategory(),
+        ),
+        ChangeNotifierProvider<Cart>(
+          create: (context) => Cart(),
+        ),
+        ChangeNotifierProvider<UserData>(
+          create: (context) => UserData(),
         ),
       ],
       child: MaterialApp(
@@ -70,20 +78,22 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           home: Root()
 
-          /*  StreamBuilder<FirebaseUser>(
-          stream: FirebaseAuth.instance.onAuthStateChanged,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.active) {
-              FirebaseUser user = snapshot.data;
-              if (user != null) {
-                return Root();
-              }
-              return Login();
-            } else {
-              return SplashScreen();
-            }
-          },
-        ), */
+          //     StreamBuilder<FirebaseUser>(
+          //   stream: FirebaseAuth.instance.onAuthStateChanged,
+          //   builder: (context, snapshot) {
+          //     if (snapshot.connectionState == ConnectionState.active) {
+          //       FirebaseUser user = snapshot.data;
+          //       if (user != null) {
+          //         Provider.of<UserData>(context)
+          //             .setUserId(user.uid, user.phoneNumber);
+          //         return Root();
+          //       }
+          //       return Login();
+          //     } else {
+          //       return SplashScreen();
+          //     }
+          //   },
+          // ),
           ),
     );
   }
