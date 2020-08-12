@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:grocery/providers/login_provider.dart';
 import 'package:grocery/providers/user_info.dart';
 import 'package:grocery/screens/address/address_scree.dart';
 import 'package:grocery/utilities/color.dart';
+import 'package:grocery/widgets/address_block.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
@@ -14,7 +14,6 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    Provider.of<UserData>(context, listen: false).getUserAddress();
   }
 
   @override
@@ -50,7 +49,7 @@ class _ProfileState extends State<Profile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Name : Akshay Asok',
+                          'Name : ${value.accountDetailes.name}',
                           style: TextStyle(
                             fontWeight: FontWeight.normal,
                             fontSize: 14,
@@ -61,7 +60,7 @@ class _ProfileState extends State<Profile> {
                           height: 8,
                         ),
                         Text(
-                          'Phone : 73562205556',
+                          'Phone : ${value.accountDetailes.phoneNumber}',
                           style: TextStyle(
                             fontWeight: FontWeight.normal,
                             fontSize: 14,
@@ -73,16 +72,14 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 titleTile(icon: Icons.house, title: 'Address'),
-                addressBock(
-                  name: 'Name',
-                  phone: '7394885003',
-                  address: 'SreeeHari Decent jn po Kollam',
-                ),
-                addressBock(
-                  name: 'Name',
-                  phone: '7394885003',
-                  address: 'SreeeHari Decent jn po Kollam',
-                ),
+                for (var i in value.accountDetailes.addresses) ...[
+                  AddressBlock(
+                    name: i.name,
+                    phone: i.phoneNumber,
+                    address: i.wholeAddress(),
+                    isDefault: i.isDefault,
+                  )
+                ],
                 SizedBox(
                   height: 8,
                 ),
@@ -125,37 +122,6 @@ class _ProfileState extends State<Profile> {
       leading: Icon(
         icon,
         color: primaryColor,
-      ),
-    );
-  }
-
-  SizedBox addressBock({String name, address, phone}) {
-    return SizedBox(
-      width: double.infinity,
-      child: Container(
-        color: Colors.grey[50],
-        padding: const EdgeInsets.all(16),
-        margin: const EdgeInsets.only(bottom: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              name,
-              style: TextStyle(
-                height: 1.4,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              address,
-              style: TextStyle(height: 1.4),
-            ),
-            Text(
-              phone,
-              style: TextStyle(height: 1.4),
-            ),
-          ],
-        ),
       ),
     );
   }

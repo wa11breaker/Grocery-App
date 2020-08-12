@@ -12,7 +12,7 @@ class GridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey[50],
+      // color: Colors.green,
       child: GestureDetector(
         onTap: () => Navigator.push(
           context,
@@ -27,15 +27,21 @@ class GridItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Expanded(
-              child: Image.network(item.imgUrl),
+              child: Align(child: Image.network(item.imgUrl)),
             ),
-            Text(item.title, style: Theme.of(context).textTheme.bodyText2),
-            SizedBox(
-              height: 8,
-            ),
-            Text(
-              '₹' + item.price.toString(),
-              style: Theme.of(context).textTheme.headline5,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(item.title, style: Theme.of(context).textTheme.bodyText2),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  '₹' + item.price.toString(),
+                  style: Theme.of(context).textTheme.headline5,
+                )
+              ],
             )
           ],
         ),

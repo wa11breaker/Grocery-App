@@ -5,6 +5,7 @@ import 'package:grocery/screens/cart/cart.dart';
 import 'package:grocery/screens/home/home.dart';
 import 'package:grocery/screens/profile/profile.dart';
 import 'package:grocery/utilities/color.dart';
+import 'package:grocery/widgets/profile_setup_alert.dart';
 import 'package:provider/provider.dart';
 import 'package:grocery/providers/user_info.dart';
 
@@ -19,6 +20,7 @@ class _RootState extends State<Root> {
     super.initState();
     Provider.of<GetBanners>(context, listen: false).getBanners();
     Provider.of<GetCategory>(context, listen: false).getCategory();
+    Provider.of<UserData>(context, listen: false).getUserDetailes(context);
   }
 
   static final List _bottomNavigationWidgets = [

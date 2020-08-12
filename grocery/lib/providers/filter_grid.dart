@@ -5,7 +5,7 @@ class FilterProvider extends ChangeNotifier {
   List _filterRestult;
   List get filterResult => _filterRestult;
 
-  bool _loadingFilterResult;
+  bool _loadingFilterResult = true;
   bool get loadingFilterResult => _loadingFilterResult;
 
   String _errorFilterMessage;
@@ -17,7 +17,6 @@ class FilterProvider extends ChangeNotifier {
   }
 
   getFilterResult(String filterId) {
-    loadingFilter(true);
     Future.delayed(Duration(seconds: 1)).then((value) => loadingFilter(false));
   }
 

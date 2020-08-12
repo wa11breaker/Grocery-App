@@ -1,10 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery/providers/cart.dart';
 import 'package:grocery/providers/filter_grid.dart';
 import 'package:grocery/screens/_init/root.dart';
-import 'package:grocery/screens/login/login.dart';
-import 'package:grocery/screens/splash_screen/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'providers/get_banners.dart';
 import 'providers/get_category.dart';

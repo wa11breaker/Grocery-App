@@ -1,0 +1,140 @@
+import 'package:flutter/material.dart';
+import 'package:grocery/providers/cart.dart';
+import 'package:grocery/utilities/color.dart';
+import 'package:provider/provider.dart';
+
+class CartItemTile extends StatelessWidget {
+  final int index;
+
+  const CartItemTile({Key key, this.index}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<Cart>(
+      builder: (context, value, _) => Container(
+        color: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          value.cartItemList[index].image,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        value.cartItemList[index].title,
+                        maxLines: 2,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        '₹ ' +
+                            value.cartItemList[index].price.toString() +
+                            ' / ' +
+                            value.cartItemList[index].unit,
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Row(
+                        children: [
+                          // GestureDetector(
+                          //   onTap: () => value.remove(value.cartItemList[index].id),
+                          //   child: Container(
+                          //     width: 40,
+                          //     height: 40,
+                          //     decoration: BoxDecoration(
+                          //       borderRadius: BorderRadius.circular(8),
+                          //       color: lightGrey,
+                          //     ),
+                          //     alignment: Alignment.center,
+                          //     child: Icon(
+                          //       Icons.delete,
+                          //       color: Colors.grey[900],
+                          //     ),
+                          //   ),
+                          // ),
+                          GestureDetector(
+                            onTap: () =>
+                                value.decrement(value.cartItemList[index].id),
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: lightGrey,
+                              ),
+                              alignment: Alignment.center,
+                              child: Icon(
+                                Icons.remove,
+                                color: Colors.grey[900],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Text(
+                                value.cartItemList[index].quandity.toString()),
+                          ),
+                          GestureDetector(
+                            onTap: () =>
+                                value.increment(value.cartItemList[index].id),
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: lightGrey,
+                              ),
+                              alignment: Alignment.center,
+                              child: Icon(
+                                Icons.add,
+                                color: Colors.grey[900],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                  Text(
+                    '₹ ${value.cartItemList[index].totalPrice}',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Divider(
+              height: 0,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

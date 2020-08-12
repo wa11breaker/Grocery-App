@@ -4,14 +4,22 @@ import 'package:grocery/providers/user_info.dart';
 import 'package:grocery/utilities/color.dart';
 import 'package:provider/provider.dart';
 
-class AddressScreen extends StatefulWidget {
+class SetUpProfile extends StatefulWidget {
   @override
-  _AddressScreenState createState() => _AddressScreenState();
+  _SetUpProfileState createState() => _SetUpProfileState();
 }
 
-class _AddressScreenState extends State<AddressScreen> {
+class _SetUpProfileState extends State<SetUpProfile> {
   final _formKey = GlobalKey<FormState>();
-  String name, number, buildingName, landmark, city, state, pincode;
+  String name, phoneNumber, buildingName, landmark, city, state, pincode;
+
+  AccountDetails accountDetails = AccountDetails();
+  @override
+  void initState() {
+    super.initState();
+    phoneNumber = Provider.of<UserData>(context, listen: false).phoneNumber;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,9 +40,21 @@ class _AddressScreenState extends State<AddressScreen> {
           child: Form(
             key: _formKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Text(
+                    'About Me',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
                 MyTextFormField(
-                  hintText: 'Name',
+                  hintText: 'Full Name',
                   validator: (String value) {
                     if (value.isEmpty) {
                       return 'Enter your name';
@@ -55,8 +75,19 @@ class _AddressScreenState extends State<AddressScreen> {
                     return null;
                   },
                   onSaved: (String value) {
-                    number = value;
+                    phoneNumber = value;
                   },
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Text(
+                    'My Delivery Address',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
                 MyTextFormField(
                   hintText: 'House No, Building name*',
@@ -123,20 +154,25 @@ class _AddressScreenState extends State<AddressScreen> {
                       FocusScope.of(context).unfocus();
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
-                        Provider.of<UserData>(context, listen: false)
-                            .addNewAddress(
-                          newAddress: Address(
+
+                        accountDetails.name = name;
+                        accountDetails.phoneNumber = phoneNumber;
+                        accountDetails.addresses = [
+                          Address(
                             name: name,
-                            phoneNumber: number,
+                            phoneNumber: phoneNumber,
                             buildingName: buildingName,
                             landmark: landmark,
                             city: city,
                             state: state,
                             pincode: pincode,
                             isDefault: true,
-                          ),
-                          context: context,
-                        );
+                          )
+                        ];
+                        print(accountDetails);
+
+                        Provider.of<UserData>(context, listen: false)
+                            .createUserData(accountDetails, context);
                       }
                     },
                     shape: RoundedRectangleBorder(

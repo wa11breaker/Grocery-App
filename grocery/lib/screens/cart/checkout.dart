@@ -1,7 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:grocery/providers/cart.dart';
+import 'package:grocery/providers/user_info.dart';
 import 'package:grocery/utilities/color.dart';
+import 'package:grocery/widgets/address_block.dart';
 import 'package:provider/provider.dart';
 import 'package:upi_pay/upi_pay.dart';
 
@@ -100,16 +102,33 @@ class _UpiPaymentState extends State<UpiPayment> {
                 height: 8,
               ),
               titleTile(icon: Icons.delivery_dining, title: 'Delivery Options'),
-              addressBock(
-                name: 'Name',
-                phone: '7394885003',
-                address: 'SreeeHari Decent jn po Kollam',
+              Consumer<UserData>(
+                // ignore: missing_return
+                builder: (context, value, _) {
+                  int i = value.accountDetailes.addresses
+                      .indexWhere((element) => element.isDefault == true);
+
+                  return AddressBlock(
+                    name: value.accountDetailes.addresses[i].name,
+                    phone: value.accountDetailes.addresses[i].phoneNumber,
+                    address: value.accountDetailes.addresses[i].wholeAddress(),
+                    isDefault: value.accountDetailes.addresses[i].isDefault,
+                  );
+                },
               ),
-              FlatButton(
-                child: Text('Change Address'),
-                onPressed: () {},
+              Consumer<UserData>(
+                // ignore: missing_return
+                builder: (context, value, _) {
+                  return value.accountDetailes.addresses.length > 1
+                      ? FlatButton(
+                          child: Text('Change Address'),
+                          onPressed: () {},
+                        )
+                      : SizedBox.shrink();
+                },
               ),
-              titleTile(icon: Icons.credit_card, title: 'Select payment'),
+              titleTile(
+                  icon: Icons.credit_card, title: 'Select a payment method'),
               ListTile(
                 tileColor: Colors.grey[50],
                 title: const Text('Cash On Delivery'),

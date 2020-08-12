@@ -1,60 +1,70 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery/models/address.dart';
+import 'package:grocery/models/account_details.dart';
+import 'package:grocery/services/firebase_api.dart';
+import 'package:grocery/widgets/profile_setup_alert.dart';
 
 class UserData extends ChangeNotifier {
   String _id;
-  String _name;
-  String _phone = '0000000000';
-  // String _address = '';
-  List<Address> _address = List();
+  String _number;
 
-  bool _profileSetupRequired;
+  String get uid => _id;
+  String get phoneNumber => _number;
 
-  String get phone => _phone;
-  String get id => _id;
-  List<Address> get address => _address;
+  AccountDetails _accountDetails;
+  AccountDetails get accountDetailes => _accountDetails;
+
+  bool _noPofile = false;
+  bool get noPofile => _noPofile;
 
   setUserId(String userId, phone) async {
     _id = userId;
-    _phone = phone;
+    _number = phone;
     notifyListeners();
   }
 
-  getUserAddress() async {
-    /*    var address =
-        await Firestore.instance.collection('customers').document(_id).get();
-    print(address.data['address']);
-    for (var i in address.data['address']) {
-      print(i);
-    }
+  getUserDetailes(context) async {
+    bool exist = await FAPI().checkUserDetail('gWeFCp0qRfdTdpotYQYNlUck9V3');
 
-    notifyListeners(); */
+    if (exist) {
+      _accountDetails = AccountDetails.fromDocument(
+        await FAPI().getUserDetail('gWeFCp0qRfdTdpotYQYNlUck9V3'),
+      );
+      _noPofile = false;
+      notifyListeners();
+    } else {
+      _noPofile = true;
+      showAlert(context);
+    }
   }
 
-  editAddress() {}
+  createUserData(AccountDetails accountDetails, context) async {
+    bool success = await FAPI().saveUserDetail(
+      uid: 'gWeFCp0qRfdTdpotYQYNlUck9V3',
+      accountDetails: accountDetails,
+    );
+    if (success) {
+      Navigator.of(context).pop();
+      _noPofile = false;
 
-  addNewAddress(context, {String name, address, phone}) async {
-    Address add = Address(address: address, name: name, phone: phone);
-
-    print(name + address + phone);
-    try {
-      // TODO change gWeFCp0qRfdTdpotYQYNlUck9V33  to _id
-      await Firestore.instance
-          .collection('customers')
-          .document('gWeFCp0qRfdTdpotYQYNlUck9V33')
-          .updateData({
-        "address": FieldValue.arrayUnion([
-          {
-            'name': add.name,
-            'address': add.address,
-            'phone': add.phone,
-          }
-        ])
-      }).then((value) => Navigator.pop(context));
-    } catch (e) {
-      print(e);
+      getUserDetailes(context);
     }
+  }
+
+  showAlert(context) {
+    if (_noPofile) SetUpAlert().setUpProfile(context);
+    notifyListeners();
+  }
+
+  addNewAddress({Address newAddress, BuildContext context}) async {
+    await FAPI()
+        .saveAddress(newAddress: newAddress, uid: 'gWeFCp0qRfdTdpotYQYNlUck9V3')
+        .then((value) {
+      if (value) {
+        Navigator.of(context).pop();
+      } else {
+        print('Failed');
+      }
+    });
   }
 }
