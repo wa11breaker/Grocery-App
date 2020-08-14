@@ -4,8 +4,8 @@ import 'package:grocery/providers/get_category.dart';
 import 'package:grocery/screens/cart/cart.dart';
 import 'package:grocery/screens/home/home.dart';
 import 'package:grocery/screens/profile/profile.dart';
+import 'package:grocery/screens/set_up_profile/set_up_profile.dart';
 import 'package:grocery/utilities/color.dart';
-import 'package:grocery/widgets/profile_setup_alert.dart';
 import 'package:provider/provider.dart';
 import 'package:grocery/providers/user_info.dart';
 
@@ -33,7 +33,66 @@ class _RootState extends State<Root> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _bottomNavigationWidgets[_navigationIndex],
+      body: Consumer<UserData>(
+        builder: (context, value, widget) => Stack(
+          children: [
+            _bottomNavigationWidgets[_navigationIndex],
+            value.profileNotFound
+                ? Container(
+                    color: Colors.black45,
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: AlertDialog(
+                      content: Container(
+                        color: Colors.white,
+                        height: 200,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              'Success',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              'Every Thing went well,\nCongratulation',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                  height: 1.5),
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              child: Card(
+                                elevation: 2,
+                                color: primaryColor,
+                                child: FlatButton(
+                                    child: Text(
+                                      'Set Up Your Profile',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => SetUpProfile(),
+                                        ),
+                                      );
+                                    }),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                : SizedBox.shrink(),
+          ],
+        ),
+      ),
       bottomNavigationBar: buildBottomNavigationBar(),
     );
   }

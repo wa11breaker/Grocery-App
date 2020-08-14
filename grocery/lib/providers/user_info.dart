@@ -14,8 +14,8 @@ class UserData extends ChangeNotifier {
   AccountDetails _accountDetails;
   AccountDetails get accountDetailes => _accountDetails;
 
-  bool _noPofile = false;
-  bool get noPofile => _noPofile;
+  bool _profileNotFound = false;
+  bool get profileNotFound => _profileNotFound;
 
   setUserId(String userId, phone) async {
     _id = userId;
@@ -24,42 +24,34 @@ class UserData extends ChangeNotifier {
   }
 
   getUserDetailes(context) async {
-    bool exist = await FAPI().checkUserDetail('gWeFCp0qRfdTdpotYQYNlUck9V3');
+    bool exist = await FAPI().checkUserDetail(_id);
 
     if (exist) {
       _accountDetails = AccountDetails.fromDocument(
-        await FAPI().getUserDetail('gWeFCp0qRfdTdpotYQYNlUck9V3'),
+        await FAPI().getUserDetail(_id),
       );
-      _noPofile = false;
+      _profileNotFound = false;
       notifyListeners();
     } else {
-      _noPofile = true;
-      showAlert(context);
+      _profileNotFound = true;
+      notifyListeners();
+      // showAlert(context);
     }
   }
 
   createUserData(AccountDetails accountDetails, context) async {
     bool success = await FAPI().saveUserDetail(
-      uid: 'gWeFCp0qRfdTdpotYQYNlUck9V3',
+      uid: _id,
       accountDetails: accountDetails,
     );
     if (success) {
       Navigator.of(context).pop();
-      _noPofile = false;
-
       getUserDetailes(context);
     }
   }
 
-  showAlert(context) {
-    if (_noPofile) SetUpAlert().setUpProfile(context);
-    notifyListeners();
-  }
-
   addNewAddress({Address newAddress, BuildContext context}) async {
-    await FAPI()
-        .saveAddress(newAddress: newAddress, uid: 'gWeFCp0qRfdTdpotYQYNlUck9V3')
-        .then((value) {
+    await FAPI().saveAddress(newAddress: newAddress, uid: _id).then((value) {
       if (value) {
         Navigator.of(context).pop();
       } else {

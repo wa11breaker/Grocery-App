@@ -1,11 +1,12 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:grocery/models/account_details.dart';
 import 'package:grocery/providers/cart.dart';
+import 'package:grocery/providers/place_order.dart';
 import 'package:grocery/providers/user_info.dart';
+import 'package:grocery/screens/cart/payment.dart';
 import 'package:grocery/utilities/color.dart';
 import 'package:grocery/widgets/address_block.dart';
 import 'package:provider/provider.dart';
-import 'package:upi_pay/upi_pay.dart';
 
 enum PaymentMethord { cod, upi }
 
@@ -15,50 +16,30 @@ class UpiPayment extends StatefulWidget {
 }
 
 class _UpiPaymentState extends State<UpiPayment> {
-  String _upiAddrError;
-
-  Future<List<ApplicationMeta>> _appsFuture;
-
+  PaymentMethord _paymentMethord = PaymentMethord.cod;
+  Address address = Address();
   @override
   void initState() {
     super.initState();
-
-    _appsFuture = UpiPay.getInstalledUpiApplications();
+    setAddress();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  setAddress() {
+    List<Address> adrs =
+        Provider.of<UserData>(context, listen: false).accountDetailes.addresses;
+    for (Address i in adrs) {
+      if (i.isDefault == true) {
+        setState(() {
+          address = i;
+        });
+      }
+    }
   }
-
-  // this will open correspondence UPI Payment gateway app on which user has tapped.
-  Future<void> _openUPIGateway(ApplicationMeta app) async {
-    setState(() {
-      _upiAddrError = null;
-    });
-
-    final transactionRef = Random.secure().nextInt(1 << 32).toString();
-    print("Starting transaction with id $transactionRef");
-
-    // this function will initiate UPI transaction.
-    final a = await UpiPay.initiateTransaction(
-      amount: '1',
-      app: app.upiApplication,
-      receiverName: 'Sharad',
-      receiverUpiAddress: '_upiAddressController.text',
-      transactionRef: transactionRef,
-      merchantCode: '7372',
-    );
-
-    print(a);
-  }
-
-  PaymentMethord _character = PaymentMethord.cod;
 
   @override
   Widget build(BuildContext context) {
     return Consumer<Cart>(
-      builder: (context, value, _) => Scaffold(
+      builder: (context, cartValue, _) => Scaffold(
         appBar: AppBar(
           elevation: 3,
           backgroundColor: Colors.white,
@@ -86,13 +67,14 @@ class _UpiPaymentState extends State<UpiPayment> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Total Item : ' + value.cartItemList.length.toString(),
+                        'Total Item : ' +
+                            cartValue.cartItemList.length.toString(),
                       ),
                       SizedBox(
                         height: 4,
                       ),
                       Text(
-                        'Total Amount : ' + value.subTotal.toString(),
+                        'Total Amount : ' + cartValue.subTotal.toString(),
                       ),
                     ],
                   ),
@@ -102,43 +84,38 @@ class _UpiPaymentState extends State<UpiPayment> {
                 height: 8,
               ),
               titleTile(icon: Icons.delivery_dining, title: 'Delivery Options'),
-              Consumer<UserData>(
-                // ignore: missing_return
-                builder: (context, value, _) {
-                  int i = value.accountDetailes.addresses
-                      .indexWhere((element) => element.isDefault == true);
-
-                  return AddressBlock(
-                    name: value.accountDetailes.addresses[i].name,
-                    phone: value.accountDetailes.addresses[i].phoneNumber,
-                    address: value.accountDetailes.addresses[i].wholeAddress(),
-                    isDefault: value.accountDetailes.addresses[i].isDefault,
-                  );
-                },
+              AddressBlock(
+                name: address.name,
+                phone: address.phoneNumber,
+                address: address.wholeAddress(),
+                isDefault: address.isDefault,
               ),
               Consumer<UserData>(
                 // ignore: missing_return
-                builder: (context, value, _) {
-                  return value.accountDetailes.addresses.length > 1
-                      ? FlatButton(
-                          child: Text('Change Address'),
-                          onPressed: () {},
-                        )
-                      : SizedBox.shrink();
-                },
+                builder: (context, value, _) =>
+                    value.accountDetailes.addresses.length > 1
+                        ? FlatButton(
+                            child: Text('Change Address'),
+                            onPressed: () {
+                              _showMyDialog();
+                            },
+                          )
+                        : SizedBox.shrink(),
               ),
               titleTile(
-                  icon: Icons.credit_card, title: 'Select a payment method'),
+                icon: Icons.credit_card,
+                title: 'Select a payment method',
+              ),
               ListTile(
                 tileColor: Colors.grey[50],
                 title: const Text('Cash On Delivery'),
                 leading: Radio(
                   activeColor: primaryColor,
                   value: PaymentMethord.cod,
-                  groupValue: _character,
+                  groupValue: _paymentMethord,
                   onChanged: (PaymentMethord value) {
                     setState(() {
-                      _character = value;
+                      _paymentMethord = value;
                     });
                   },
                 ),
@@ -149,10 +126,10 @@ class _UpiPaymentState extends State<UpiPayment> {
                 leading: Radio(
                   activeColor: primaryColor,
                   value: PaymentMethord.upi,
-                  groupValue: _character,
+                  groupValue: _paymentMethord,
                   onChanged: (PaymentMethord value) {
                     setState(() {
-                      _character = value;
+                      _paymentMethord = value;
                     });
                   },
                 ),
@@ -166,22 +143,26 @@ class _UpiPaymentState extends State<UpiPayment> {
                   elevation: 2,
                   color: primaryColor,
                   child: FlatButton(
-                      child: Text(
-                        'Place Order',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () {}),
+                    child: Text(
+                      'Place Order',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      if (_paymentMethord.toString() == 'PaymentMethord.upi') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Payment(),
+                          ),
+                        );
+                      } else {
+                        Provider.of<PlaceOrder>(context, listen: false)
+                            .placeCodOrder(context, address);
+                      }
+                    },
+                  ),
                 ),
               ),
-
-              /*   if (_upiAddrError != null)
-                Container(
-                  margin: EdgeInsets.only(top: 4, left: 12),
-                  child: Text(
-                    _upiAddrError,
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ), */
             ],
           ),
         ),
@@ -205,107 +186,42 @@ class _UpiPaymentState extends State<UpiPayment> {
     );
   }
 
-  SizedBox addressBock({String name, address, phone}) {
-    return SizedBox(
-      width: double.infinity,
-      child: Container(
-        color: Colors.grey[50],
-        padding: const EdgeInsets.all(16),
-        margin: const EdgeInsets.only(bottom: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              name,
-              style: TextStyle(
-                height: 1.4,
-                fontWeight: FontWeight.bold,
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select an address'),
+          content: Consumer<UserData>(
+            builder: (context, value, _) => SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ...value.accountDetailes.addresses.map(
+                    (e) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            address = e;
+                          });
+                          Navigator.of(context).pop();
+                        },
+                        child: AddressBlock(
+                          address: e.wholeAddress(),
+                          name: e.name,
+                          phone: e.phoneNumber,
+                          isDefault: false,
+                        ),
+                      );
+                    },
+                  ).toList()
+                ],
               ),
             ),
-            Text(
-              address,
-              style: TextStyle(height: 1.4),
-            ),
-            Text(
-              phone,
-              style: TextStyle(height: 1.4),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
-/*   Container(
-                margin: EdgeInsets.only(top: 128, bottom: 32),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(bottom: 12),
-                      child: Text(
-                        'Pay Using',
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                    ),
-                    FutureBuilder<List<ApplicationMeta>>(
-                      future: _appsFuture,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState != ConnectionState.done) {
-                          return Container();
-                        }
-
-                        return GridView.count(
-                          crossAxisCount: 2,
-                          shrinkWrap: true,
-                          mainAxisSpacing: 8,
-                          crossAxisSpacing: 8,
-                          childAspectRatio: 1.6,
-                          physics: NeverScrollableScrollPhysics(),
-                          children: snapshot.data
-                              .map((i) => ListTile(
-                                        leading: CircleAvatar(
-                                          child: Image.memory(
-                                            i.icon,
-                                            width: 64,
-                                            height: 64,
-                                          ),
-                                        ),
-                                        title: Text(
-                                          i.upiApplication.getAppName(),
-                                        ),
-                                      )
-
-                                  // Material(
-                                  //   key: ObjectKey(i.upiApplication),
-                                  //   color: Colors.grey[200],
-                                  //   child: InkWell(
-                                  //     onTap: () => _openUPIGateway(i),
-                                  //     child: Column(
-                                  //       mainAxisSize: MainAxisSize.min,
-                                  //       mainAxisAlignment:
-                                  //           MainAxisAlignment.center,
-                                  //       children: <Widget>[
-                                  //         Image.memory(
-                                  //           i.icon,
-                                  //           width: 64,
-                                  //           height: 64,
-                                  //         ),
-                                  //         Container(
-                                  //           margin: EdgeInsets.only(top: 4),
-                                  //           child: Text(
-                                  //             i.upiApplication.getAppName(),
-                                  //           ),
-                                  //         ),
-                                  //       ],
-                                  //     ),
-                                  //   ),
-                                  // ),
-                                  )
-                              .toList(),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ) */

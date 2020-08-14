@@ -16,19 +16,14 @@ class LoginWithPhone extends ChangeNotifier {
   String _otp;
   String get otp => _otp;
 
-  int _countdown;
-  get countdown => _countdown;
-
-  String _time = '';
-  String get time => _time;
-
   String _errorMessage = '';
   String get errorMessage => _errorMessage;
 
   String _otpError;
   String get otpError => _otpError;
 
-  Timer tmr;
+  bool _isOtpScreen = false;
+  bool get isOtpScreen => _isOtpScreen;
 
   void onTextChange(String number) {
     _phoneNumber = number;
@@ -48,32 +43,9 @@ class LoginWithPhone extends ChangeNotifier {
     }
   }
 
-  void countDown() {
-    _countdown = 60 * 2;
-
-    tmr = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (_countdown != 0) {
-        final int min = _countdown ~/ 60;
-        final int sec = _countdown - min * 60;
-
-        _time = min.toString().padLeft(2, '0') +
-            ':' +
-            sec.toString().padLeft(2, '0');
-
-        _countdown--;
-        notifyListeners();
-      } else {
-        tmr.cancel();
-      }
-    });
-  }
-
-  void resetCountDown() {
-    _countdown = 60 * 2;
-    countDown();
-  }
-
   Future<void> verifyPhone() async {
+    _isOtpScreen = true;
+    notifyListeners();
     final PhoneVerificationCompleted verified = (AuthCredential authResult) {
       signIn(authResult, null);
     };

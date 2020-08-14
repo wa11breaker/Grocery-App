@@ -65,19 +65,6 @@ class _SetUpProfileState extends State<SetUpProfile> {
                     name = value;
                   },
                 ),
-                MyTextFormField(
-                  isNubmer: true,
-                  hintText: '10-digit mobile number*',
-                  validator: (String value) {
-                    if (value.length != 10) {
-                      return 'Please enter a valid mobile number';
-                    }
-                    return null;
-                  },
-                  onSaved: (String value) {
-                    phoneNumber = value;
-                  },
-                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: Text(

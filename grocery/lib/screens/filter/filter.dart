@@ -33,26 +33,20 @@ class _FilterState extends State<Filter> {
                   backgroundColor: primaryColor,
                 ),
               )
-            : RefreshIndicator(
-                backgroundColor: Colors.blue,
-                onRefresh: () async {
-                  await Future.delayed(Duration(seconds: 5));
-                },
-                child: GridView.builder(
-                  padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
-                  physics: ClampingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: filter.filterList.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 24,
-                    childAspectRatio: 1 / 1.3,
-                  ),
-                  itemBuilder: (BuildContext context, int index) {
-                    return GridItem(item: filter.filterList[index]);
-                  },
+            : GridView.builder(
+                padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
+                physics: ClampingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: filter.filterList.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 24,
+                  childAspectRatio: .8,
                 ),
+                itemBuilder: (BuildContext context, int index) {
+                  return GridItem(item: filter.filterList[index]);
+                },
               ),
       ),
     );

@@ -84,16 +84,6 @@ class CartScreen extends StatelessWidget {
                           padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                           child: Row(
                             children: [
-                              Text('Totoal Price :  '),
-                              Text(
-                                '₹ ' + value.subTotal.toString(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: primaryColor,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              Spacer(),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10),
@@ -123,6 +113,16 @@ class CartScreen extends StatelessWidget {
                                       ),
                                     ),
                                   ),
+                                ),
+                              ),
+                              Spacer(),
+                              Text('Totoal Price :  '),
+                              Text(
+                                '₹ ' + value.subTotal.toString(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: primaryColor,
+                                  fontSize: 16,
                                 ),
                               ),
                             ],

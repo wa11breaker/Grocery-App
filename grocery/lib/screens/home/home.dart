@@ -64,10 +64,13 @@ class HomeScreen extends StatelessWidget {
                             crossAxisCount: 2,
                             crossAxisSpacing: 16,
                             mainAxisSpacing: 24,
-                            childAspectRatio: .8 / 1,
+                            childAspectRatio: .8,
                           ),
                           itemBuilder: (BuildContext context, int index) {
-                            return GridItem(item: filter.filterList[index]);
+                            return /* Container(
+                              color: Colors.black,
+                            ); */
+                                GridItem(item: filter.filterList[index]);
                           },
                         ),
                       ),

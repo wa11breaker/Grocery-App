@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery/models/category.dart';
 import 'package:grocery/screens/filter/filter.dart';
@@ -29,12 +30,22 @@ class FilterIcon extends StatelessWidget {
               height: 60,
               width: 60,
               decoration: BoxDecoration(
-                color: Colors.grey[200],
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(.25),
+                    blurRadius: 8,
+                  ),
+                ],
               ),
               child: Padding(
                 padding: const EdgeInsets.all(12),
-                child: Image.network(category.image),
+                child: Image(
+                  image: CachedNetworkImageProvider(
+                    category.image,
+                  ),
+                ),
               ),
             ),
             SizedBox(

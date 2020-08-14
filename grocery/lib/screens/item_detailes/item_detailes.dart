@@ -13,7 +13,6 @@ class ItemDetailes extends StatelessWidget {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: lightGrey,
       appBar: AppBar(),
       body: SafeArea(
         child: Stack(
@@ -27,19 +26,28 @@ class ItemDetailes extends StatelessWidget {
                       Container(
                         height: height / 3,
                         width: double.infinity,
-                        decoration: BoxDecoration(color: Colors.white),
-                        child: Image.network(item.imgUrl),
+                        // margin: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(16),
+                            bottomRight: Radius.circular(16),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(.25),
+                              blurRadius: 8,
+                            )
+                          ],
+                        ),
+                        child: Hero(
+                          tag: item.imgUrl + item.id,
+                          child: Image.network(item.imgUrl + item.id),
+                        ),
                       ),
                       Container(
                         padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
                         width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: lightGrey,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(16),
-                            topRight: Radius.circular(16),
-                          ),
-                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -82,102 +90,45 @@ class ItemDetailes extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               child: Consumer<Cart>(
                 builder: (context, value, _) => Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                  child: SizedBox(
-                    height: 55,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CartScreen())),
-                          child: Container(
-                            height: 55,
-                            width: 55,
-                            padding: const EdgeInsets.all(8),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: primaryColor,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Stack(
-                              children: [
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Icon(
-                                    Icons.shopping_cart,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                value.cartItemList.length > 0
-                                    ? Align(
-                                        alignment: Alignment.topRight,
-                                        child: Container(
-                                          height: 12,
-                                          width: 12,
-                                          decoration: BoxDecoration(
-                                            color: Colors.red,
-                                            shape: BoxShape.circle,
-                                          ),
-                                        ),
-                                      )
-                                    : SizedBox.shrink()
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        value.cartItemList.indexWhere(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                    child: Expanded(
+                      child: SizedBox(
+                        height: 55,
+                        width: double.infinity,
+                        child: value.cartItemList.indexWhere(
                                     (element) => element.id == item.id) ==
                                 -1
-                            ? Expanded(
-                                child: GestureDetector(
-                                  onTap: () => value.addToCart(item),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    height: 55,
-                                    decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(
-                                      'Buy Now',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
+                            ? RaisedButton(
+                                onPressed: value.addToCart(item),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                elevation: 5,
+                                color: primaryColor,
+                                child: Text(
+                                  'ADD TO CART',
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               )
-                            : Expanded(
-                                child: GestureDetector(
-                                  onTap: () => value.addToCart(item),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    height: 55,
-                                    decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(
-                                      'Added',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
+                            : RaisedButton(
+                                onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CartScreen(),
                                   ),
                                 ),
-                              )
-                      ],
-                    ),
-                  ),
-                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                elevation: 5,
+                                color: primaryColor,
+                                child: Text(
+                                  'GO TO CART',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                      ),
+                    )),
               ),
             )
           ],

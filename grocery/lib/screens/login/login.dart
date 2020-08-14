@@ -12,6 +12,16 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
+    return Consumer<LoginWithPhone>(
+      builder: (context, value, child) =>
+          !value.isOtpScreen ? LoginScreen() : OTPScreen(),
+    );
+  }
+}
+
+class LoginScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return Consumer<LoginWithPhone>(
       builder: (context, value, child) => Scaffold(
@@ -24,78 +34,62 @@ class _LoginState extends State<Login> {
               children: <Widget>[
                 SizedBox(
                   height: 100,
-                  child: FlutterLogo(
-                    size: 50,
-                  ),
+                  child: Image.asset('assets/logo.jpg'),
                 ),
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(
-                      'Welcome',
-                      style: Theme.of(context).textTheme.headline4.copyWith(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                    ),
+                    Text('Enter Mobile Number'),
                     SizedBox(
-                      height: 4,
+                      height: 16,
                     ),
-                    Text('Sign in to continue'),
-                  ],
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text('Enter Mobile Number'),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                            color: lightGrey,
-                            borderRadius: BorderRadius.circular(4)),
-                        child: TextField(
-                          // controller: _phoneNumber,
-                          keyboardType: TextInputType.number,
-                          cursorColor: primaryColor,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            letterSpacing: 1,
-                            color: Colors.black,
-                          ),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            prefixIcon: Padding(
-                              padding:
-                                  const EdgeInsets.only(right: 20, left: 16),
-                              child: Text(
-                                '+91-',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                ),
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                          color: lightGrey,
+                          borderRadius: BorderRadius.circular(4)),
+                      child: TextField(
+                        // controller: _phoneNumber,
+                        keyboardType: TextInputType.number,
+                        cursorColor: primaryColor,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          letterSpacing: 1,
+                          color: Colors.black,
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.only(right: 20, left: 16),
+                            child: Text(
+                              '+91-',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.black,
                               ),
                             ),
-                            prefixIconConstraints: BoxConstraints(
-                              minWidth: 23,
-                              maxHeight: 20,
-                            ),
-
-                            // contentPadding: EdgeInsets.only(top: 20),
                           ),
-                          onChanged: (numb) => value.onTextChange(numb),
-                          onSubmitted: (numb) => value.validate(),
+                          prefixIconConstraints: BoxConstraints(
+                            minWidth: 23,
+                            maxHeight: 20,
+                          ),
+
+                          // contentPadding: EdgeInsets.only(top: 20),
                         ),
+                        onChanged: (numb) => value.onTextChange(numb),
+                        onSubmitted: (numb) => value.validate(),
                       ),
-                      SizedBox(height: 8),
-                      Text(
-                        value.errorMessage,
-                        style: TextStyle(color: Colors.red, fontSize: 14),
-                      )
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      value.errorMessage,
+                      style: TextStyle(color: Colors.red, fontSize: 14),
+                    )
+                  ],
                 ),
                 SizedBox(
                   width: double.infinity,
@@ -105,10 +99,6 @@ class _LoginState extends State<Login> {
                       FocusScope.of(context).unfocus();
                       if (value.validate()) {
                         value.verifyPhone();
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => OTPScreen()),
-                        );
                       }
                     },
                     shape: RoundedRectangleBorder(
@@ -117,7 +107,7 @@ class _LoginState extends State<Login> {
                     elevation: 5,
                     color: primaryColor,
                     child: Text(
-                      'GET OTP',
+                      'NEXT',
                       style: TextStyle(color: Colors.white),
                     ),
                   ),

@@ -88,14 +88,20 @@ class CartItemTile extends StatelessWidget {
                               alignment: Alignment.center,
                               child: Icon(
                                 Icons.remove,
-                                color: Colors.grey[900],
+                                color: Colors.grey[700],
                               ),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
-                                value.cartItemList[index].quandity.toString()),
+                              value.cartItemList[index].quandity.toString(),
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
                           ),
                           GestureDetector(
                             onTap: () =>
@@ -110,7 +116,7 @@ class CartItemTile extends StatelessWidget {
                               alignment: Alignment.center,
                               child: Icon(
                                 Icons.add,
-                                color: Colors.grey[900],
+                                color: Colors.grey[700],
                               ),
                             ),
                           ),
