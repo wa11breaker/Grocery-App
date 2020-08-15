@@ -13,6 +13,7 @@ class OrderModel {
   final String userId;
   final String phone;
   final String name;
+  final String deliveryTime;
 
   OrderModel({
     this.orderedAt,
@@ -20,6 +21,7 @@ class OrderModel {
     this.totalPrice,
     this.orderItems,
     this.orderStatus,
+    this.deliveryTime,
     this.cod,
     this.paymentId,
     this.orderAddress,
@@ -36,6 +38,7 @@ class OrderModel {
         'cod': cod,
         'paymentId': paymentId,
         'orderAddress': orderAddress,
+        'deliveryTime': deliveryTime,
         'userId': userId,
         'phone': phone,
         'name': name,

@@ -12,6 +12,31 @@ class SetUpProfile extends StatefulWidget {
 class _SetUpProfileState extends State<SetUpProfile> {
   final _formKey = GlobalKey<FormState>();
   String name, phoneNumber, buildingName, landmark, city, state, pincode;
+  List<String> pincodes = [
+    '695005',
+    '695008',
+    '695562',
+    '695040',
+    '695002',
+    '695003',
+    '695009',
+    '695013',
+    '695004',
+    '695012',
+    '695038',
+    '695033',
+    '695027',
+    '695016',
+    '695023',
+    '695011',
+    '695024',
+    '695034',
+    '695001',
+    '695014',
+    '695010',
+    '695035',
+    '695013'
+  ];
 
   AccountDetails accountDetails = AccountDetails();
   @override
@@ -127,6 +152,8 @@ class _SetUpProfileState extends State<SetUpProfile> {
                     validator: (String value) {
                       if (value.length != 6) {
                         return 'Please enter a valid pin code';
+                      } else if (!pincodes.contains(value)) {
+                        return 'We do not deliver to this pincode at the moment';
                       }
                       return null;
                     },
@@ -223,3 +250,38 @@ class MyTextFormField extends StatelessWidget {
     );
   }
 }
+
+/* List<String> pincodes = [
+  '695005',
+  '695008',
+  '695014',
+  '695562',
+  '695004',
+  '695014',
+  '695040',
+  '695024',
+  '695002',
+  '695003',
+  '695003',
+  '695009',
+  '695013',
+  '695004',
+  '695033',
+  '695012',
+  '695038',
+  '695033',
+  '695010',
+  '695027',
+  '695001',
+  '695016',
+  '695023',
+  '695011',
+  '695024',
+  '695034',
+  '695001',
+  '695014',
+  '695010',
+  '695035',
+  '695013'
+];
+ */

@@ -21,6 +21,7 @@ class _UpiPaymentState extends State<UpiPayment> {
 
   PaymentMethord _paymentMethord = PaymentMethord.cod;
   Address address = Address();
+  String deliveryTime = '07:30 am   -   10:30 am';
   @override
   void initState() {
     super.initState();
@@ -102,11 +103,17 @@ class _UpiPaymentState extends State<UpiPayment> {
             address: address,
             cod: false,
             paymentId: paymentId,
+            deliveryTime: deliveryTime,
           )
           .then((value) => showstatus(value));
     } else {
       Provider.of<PlaceOrder>(context, listen: false)
-          .placeCodOrder(context: context, address: address, cod: true)
+          .placeCodOrder(
+            context: context,
+            address: address,
+            cod: true,
+            deliveryTime: deliveryTime,
+          )
           .then((value) => showstatus(value));
     }
   }
@@ -243,6 +250,45 @@ class _UpiPaymentState extends State<UpiPayment> {
                 height: 8,
               ),
               titleTile(icon: Icons.delivery_dining, title: 'Delivery Options'),
+              ListTile(
+                tileColor: Colors.grey[50],
+                title: Row(
+                  children: [
+                    Text('Select time slot'),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    DropdownButton<String>(
+                      value: deliveryTime,
+                      icon: Icon(
+                        Icons.arrow_downward,
+                        color: Colors.blue,
+                      ),
+                      iconSize: 24,
+                      elevation: 16,
+                      style: TextStyle(color: Colors.blue),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          deliveryTime = newValue;
+                        });
+                      },
+                      items: <String>[
+                        '07:30 am   -   10:30 am',
+                        '12:30 pm   -   2:00 pm',
+                        '03:30 pm   -   05:00 pm',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 8,
+              ),
               AddressBlock(
                 name: address.name,
                 phone: address.phoneNumber,
@@ -281,7 +327,7 @@ class _UpiPaymentState extends State<UpiPayment> {
               ),
               ListTile(
                 tileColor: Colors.grey[50],
-                title: const Text('Online'),
+                title: const Text('Pay online'),
                 leading: Radio(
                   activeColor: primaryColor,
                   value: PaymentMethord.upi,
