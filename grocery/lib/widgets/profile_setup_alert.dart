@@ -9,6 +9,7 @@ class SetUpAlert {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return WillPopScope(
+          // ignore: missing_return
           onWillPop: () {},
           child: AlertDialog(
             content: Container(

@@ -42,7 +42,10 @@ class ItemDetailes extends StatelessWidget {
                         ),
                         child: Hero(
                           tag: item.imgUrl + item.id,
-                          child: Image.network(item.imgUrl + item.id),
+                          child: Image.network(
+                            item.imgUrl + item.id,
+                            // fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       Container(
@@ -90,45 +93,44 @@ class ItemDetailes extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               child: Consumer<Cart>(
                 builder: (context, value, _) => Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                    child: Expanded(
-                      child: SizedBox(
-                        height: 55,
-                        width: double.infinity,
-                        child: value.cartItemList.indexWhere(
-                                    (element) => element.id == item.id) ==
-                                -1
-                            ? RaisedButton(
-                                onPressed: value.addToCart(item),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                elevation: 5,
-                                color: primaryColor,
-                                child: Text(
-                                  'ADD TO CART',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              )
-                            : RaisedButton(
-                                onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CartScreen(),
-                                  ),
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                elevation: 5,
-                                color: primaryColor,
-                                child: Text(
-                                  'GO TO CART',
-                                  style: TextStyle(color: Colors.white),
-                                ),
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                  child: SizedBox(
+                    height: 55,
+                    width: double.infinity,
+                    child: value.cartItemList.indexWhere(
+                                (element) => element.id == item.id) ==
+                            -1
+                        ? RaisedButton(
+                            onPressed: () => value.addToCart(item),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            elevation: 5,
+                            color: primaryColor,
+                            child: Text(
+                              'ADD TO CART',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          )
+                        : RaisedButton(
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CartScreen(),
                               ),
-                      ),
-                    )),
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            elevation: 5,
+                            color: primaryColor,
+                            child: Text(
+                              'GO TO CART',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                  ),
+                ),
               ),
             )
           ],

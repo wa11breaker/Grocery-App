@@ -14,7 +14,7 @@ class CartScreen extends StatelessWidget {
         elevation: 3,
         backgroundColor: Colors.white,
         title: Text(
-          'Cart',
+          'My Cart',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -84,35 +84,25 @@ class CartScreen extends StatelessWidget {
                           padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                           child: Row(
                             children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: GestureDetector(
-                                  behavior: HitTestBehavior.translucent,
-                                  onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => UpiPayment(),
-                                    ),
+                              RaisedButton(
+                                onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => UpiPayment(),
                                   ),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 8,
-                                      horizontal: 24,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(
-                                      'Check Out',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                  horizontal: 24,
+                                ),
+                                elevation: 5,
+                                color: primaryColor,
+                                child: Text(
+                                  'Check Out',
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               ),
                               Spacer(),

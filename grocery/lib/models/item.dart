@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ItemModle {
   String id;
   String title;
@@ -5,7 +7,7 @@ class ItemModle {
   String imgUrl;
   String description;
   String unit;
-  bool isAvilable;
+  bool inStock;
   ItemModle({
     this.id,
     this.title,
@@ -13,17 +15,33 @@ class ItemModle {
     this.imgUrl,
     this.description,
     this.unit,
-    this.isAvilable,
+    this.inStock,
   });
-  factory ItemModle.fromMap(Map data) {
+  factory ItemModle.formDocument(DocumentSnapshot doc) {
+    Map data = doc.data;
     return ItemModle(
-      id: data['id'],
-      title: data['title'],
-      price: data['price'],
-      imgUrl: data['imgUrl'],
+      id: doc.documentID,
+      title: data['name'],
+      price: data['price'].runtimeType == int
+          ? data['price'].toDouble()
+          : data['price'],
+      imgUrl: data['image'],
       description: data['description'],
       unit: data['unit'],
-      isAvilable: data['isAvilable'],
+      inStock: data['inStock'],
     );
   }
 }
+//! TODO
+/* TODO
+
+description 
+image 
+inStock true
+name "Fresho Chicken - Curry Cut Without Skin"
+price 125
+unit "1kg" 
+
+
+
+ */

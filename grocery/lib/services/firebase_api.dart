@@ -1,22 +1,81 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grocery/models/account_details.dart';
+import 'package:grocery/models/category.dart';
+import 'package:grocery/models/item.dart';
 
 class FAPI {
   Future<List<String>> banners() async {
     List<String> _banners = List();
     Map tempBanners;
+    try {
+      await Firestore.instance
+          .collection('store')
+          .document('banners')
+          .get()
+          .then(
+            (value) => tempBanners = value.data,
+          );
+      for (var i in tempBanners['bannerList']) {
+        _banners.add(i);
+      }
+    } catch (e) {
+      print(e);
+    }
+    return _banners;
+  }
+
+  Future<List<Categorys>> category() async {
+    List<Categorys> _category = List<Categorys>();
+
     await Firestore.instance
-        .collection('container')
-        .document('banners')
+        .collection('store')
+        .document('category')
         .get()
         .then(
-          (value) => tempBanners = value.data,
-        );
-    for (var i in tempBanners['bannerList']) {
-      _banners.add(i);
-    }
+      (doc) {
+        for (var i in doc.data['categoryList']) {
+          _category.add(Categorys.fromMap(i));
+        }
+      },
+    );
 
-    return _banners;
+    return _category;
+  }
+
+  Future<List<ItemModle>> filter({String categoryId}) async {
+    List<ItemModle> _category = List<ItemModle>();
+
+    await Firestore.instance
+        .collection('items')
+        .where('categoryId', isEqualTo: categoryId)
+        .getDocuments()
+        .then(
+      (doc) {
+        for (var i in doc.documents) {
+          _category.add(ItemModle.formDocument(i));
+        }
+      },
+    );
+
+    return _category;
+  }
+
+  Future<List<ItemModle>> featuredProduct() async {
+    List<ItemModle> _category = List<ItemModle>();
+
+    await Firestore.instance
+        .collection('items')
+        .where('featured', isEqualTo: true)
+        .getDocuments()
+        .then(
+      (doc) {
+        for (var i in doc.documents) {
+          _category.add(ItemModle.formDocument(i));
+        }
+      },
+    );
+
+    return _category;
   }
 
   Future<bool> checkUserDetail(String uid) async {
@@ -29,6 +88,7 @@ class FAPI {
         return false;
       }
     } catch (e) {
+      print(e);
       return false;
     }
   }

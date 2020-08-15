@@ -80,11 +80,17 @@ class Cart extends ChangeNotifier {
     }
   }
 
-  calculateSubTotal() {
+  clear() {
+    _cartItemList.clear();
+    notifyListeners();
+  }
+
+  double calculateSubTotal() {
     double tempSubTotal = 0;
     for (int i = 0; i < _cartItemList.length; i++) {
       tempSubTotal += _cartItemList[i].price * _cartItemList[i].quandity;
     }
     _subTotal = tempSubTotal;
+    return tempSubTotal;
   }
 }

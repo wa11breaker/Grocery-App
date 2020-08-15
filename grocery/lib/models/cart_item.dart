@@ -15,4 +15,12 @@ class CartItem {
     this.totalPrice,
     this.quandity,
   });
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'id': id,
+        'title': title,
+        'image': image,
+        'price': price,
+        'unit': unit,
+        'quandity': quandity
+      };
 }

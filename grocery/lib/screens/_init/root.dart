@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:grocery/providers/get_banners.dart';
 import 'package:grocery/providers/get_category.dart';
+import 'package:grocery/providers/get_featured.dart';
 import 'package:grocery/screens/cart/cart.dart';
 import 'package:grocery/screens/home/home.dart';
 import 'package:grocery/screens/profile/profile.dart';
 import 'package:grocery/screens/set_up_profile/set_up_profile.dart';
 import 'package:grocery/utilities/color.dart';
 import 'package:provider/provider.dart';
-import 'package:grocery/providers/user_info.dart';
+import 'package:grocery/providers/user_data.dart';
 
 class Root extends StatefulWidget {
   @override
@@ -20,6 +21,7 @@ class _RootState extends State<Root> {
     super.initState();
     Provider.of<GetBanners>(context, listen: false).getBanners();
     Provider.of<GetCategory>(context, listen: false).getCategory();
+    Provider.of<FeaturedProduct>(context, listen: false).getFeaturedProduct();
     Provider.of<UserData>(context, listen: false).getUserDetailes(context);
   }
 

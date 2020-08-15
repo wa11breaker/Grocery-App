@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grocery/models/account_details.dart';
-import 'package:grocery/providers/user_info.dart';
+import 'package:grocery/providers/user_data.dart';
 import 'package:grocery/utilities/color.dart';
 import 'package:provider/provider.dart';
 

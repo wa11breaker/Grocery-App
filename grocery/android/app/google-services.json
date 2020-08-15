@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "167814762820",
-    "firebase_url": "https://grocery-d08a2.firebaseio.com",
-    "project_id": "grocery-d08a2",
-    "storage_bucket": "grocery-d08a2.appspot.com"
+    "project_number": "559314550489",
+    "firebase_url": "https://capital-supply-6dee7.firebaseio.com",
+    "project_id": "capital-supply-6dee7",
+    "storage_bucket": "capital-supply-6dee7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:167814762820:android:4f794c53945c6df5668711",
+        "mobilesdk_app_id": "1:559314550489:android:dac1780c0df82953bd08c8",
         "android_client_info": {
-          "package_name": "com.xnorstudios.grocery"
+          "package_name": "com.capitalsupply.grocery"
         }
       },
       "oauth_client": [
         {
-          "client_id": "167814762820-dofngsdi4guocgte1jidqndrb7nbuqjp.apps.googleusercontent.com",
+          "client_id": "559314550489-2jg6e8u75q71g08ra8k6fpac8qrrhhru.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.xnorstudios.grocery",
-            "certificate_hash": "9e6f5cbd6648b2b216d75bbed674602fa882c42f"
+            "package_name": "com.capitalsupply.grocery",
+            "certificate_hash": "9b30faf0fe1843aa7d762b2b59960d003de46b6a"
           }
         },
         {
-          "client_id": "167814762820-mmtug8656s660and3hjm6mtem5p8i2ct.apps.googleusercontent.com",
+          "client_id": "559314550489-pe5bpm7a4m7ouf1ubag7l9rfnv73n3vj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDfIkZ4D_TEk-kFUwuTC5FiK2BnkDJ97Wg"
+          "current_key": "AIzaSyCRf17zIXHHewbWnmE4H2wv_w7Om11Ich0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "167814762820-mmtug8656s660and3hjm6mtem5p8i2ct.apps.googleusercontent.com",
+              "client_id": "559314550489-pe5bpm7a4m7ouf1ubag7l9rfnv73n3vj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

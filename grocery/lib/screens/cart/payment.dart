@@ -1,9 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:grocery/providers/cart.dart';
+import 'package:grocery/providers/user_data.dart';
 import 'package:provider/provider.dart';
-import 'package:upi_pay/upi_pay.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class Payment extends StatefulWidget {
   @override
@@ -11,128 +11,78 @@ class Payment extends StatefulWidget {
 }
 
 class _PaymentState extends State<Payment> {
-  String _upiAddrError;
+  Razorpay _razorpay;
 
-  Future<List<ApplicationMeta>> _appsFuture;
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Razorpay Sample App'),
+        ),
+        body: Center(
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+              RaisedButton(onPressed: openCheckout, child: Text('Open'))
+            ])),
+      ),
+    );
+  }
 
   @override
   void initState() {
     super.initState();
-
-    _appsFuture = UpiPay.getInstalledUpiApplications();
-  }
-
-  // this will open correspondence UPI Payment gateway app on which user has tapped.
-  Future<void> _openUPIGateway(ApplicationMeta app) async {
-    setState(() {
-      _upiAddrError = null;
-    });
-
-    final transactionRef = Random.secure().nextInt(1 << 32).toString();
-    print("Starting transaction with id $transactionRef");
-
-    // this function will initiate UPI transaction.
-    final a = await UpiPay.initiateTransaction(
-      amount: Provider.of<Cart>(context).subTotal.toString(),
-      app: app.upiApplication,
-      receiverName: 'Sharad',
-      receiverUpiAddress: 'akshayasok1998-2@okhdfcbank',
-      transactionRef: transactionRef,
-      merchantCode: '7372',
-    );
-
-    print(a);
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(top: 128, bottom: 32),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(bottom: 12),
-                  child: Text(
-                    'Pay Using',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                ),
-                if (_upiAddrError != null)
-                  Container(
-                    margin: EdgeInsets.only(top: 4, left: 12),
-                    child: Text(
-                      _upiAddrError,
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ),
-                FutureBuilder<List<ApplicationMeta>>(
-                  future: _appsFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState != ConnectionState.done) {
-                      return Container();
-                    }
+  void dispose() {
+    super.dispose();
+    _razorpay.clear();
+  }
 
-                    return GridView.count(
-                      crossAxisCount: 2,
-                      shrinkWrap: true,
-                      mainAxisSpacing: 8,
-                      crossAxisSpacing: 8,
-                      childAspectRatio: 1.6,
-                      physics: NeverScrollableScrollPhysics(),
-                      children: snapshot.data
-                          .map(
-                            (i) =>
-                                /*  ListTile(
-                                        leading: CircleAvatar(
-                                          child: Image.memory(
-                                            i.icon,
-                                            width: 64,
-                                            height: 64,
-                                          ),
-                                        ),
-                                        title: Text(
-                                          i.upiApplication.getAppName(),
-                                        ),
-                                      ) */
+  void openCheckout() async {
+    var options = {
+      'key': 'rzp_test_3Y8Ul2eMhX9sDr',
+      'amount': Provider.of<Cart>(context, listen: false).subTotal * 100,
+      'name': 'Capital Supply',
+      'description': 'Fine T-Shirt',
+      'prefill': {
+        'name':
+            Provider.of<UserData>(context, listen: false).accountDetailes.name,
+        'phone': Provider.of<UserData>(context, listen: false)
+            .accountDetailes
+            .phoneNumber
+      },
+      'external': {
+        'wallets': ['paytm']
+      }
+    };
 
-                                Material(
-                              key: ObjectKey(i.upiApplication),
-                              color: Colors.grey[200],
-                              child: InkWell(
-                                onTap: () => _openUPIGateway(i),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Image.memory(
-                                      i.icon,
-                                      width: 64,
-                                      height: 64,
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(top: 4),
-                                      child: Text(
-                                        i.upiApplication.getAppName(),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )
-                          .toList(),
-                    );
-                  },
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      debugPrint(e);
+    }
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    Fluttertoast.showToast(
+        msg: "SUCCESS: " + response.paymentId, timeInSecForIosWeb: 4);
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    Fluttertoast.showToast(
+        msg: "ERROR: " + response.code.toString() + " - " + response.message,
+        timeInSecForIosWeb: 4);
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    Fluttertoast.showToast(
+        msg: "EXTERNAL_WALLET: " + response.walletName, timeInSecForIosWeb: 4);
   }
 }

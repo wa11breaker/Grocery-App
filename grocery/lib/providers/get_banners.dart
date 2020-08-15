@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:grocery/services/firebase_api.dart';
 
 class GetBanners extends ChangeNotifier {
   List<String> _banners = List();
@@ -15,20 +15,7 @@ class GetBanners extends ChangeNotifier {
 
   Future<void> getBanners() async {
     if (_banners.length == 0) {
-      Map<String, dynamic> tempBanners;
-
-      await Firestore.instance
-          .collection('container')
-          .document('banners')
-          .get()
-          .then(
-            (value) => tempBanners = value.data,
-          );
-
-      for (var i in tempBanners['bannerList']) {
-        _banners.add(i);
-      }
-
+      _banners = await FAPI().banners();
       loading(false);
     }
   }

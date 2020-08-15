@@ -21,17 +21,26 @@ class AddressBlock extends StatelessWidget {
             Text(
               name,
               style: TextStyle(
-                height: 1.4,
-                fontWeight: FontWeight.bold,
-              ),
+                  height: 1.4,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
+            ),
+            SizedBox(
+              height: 4,
             ),
             Text(
               address,
-              style: TextStyle(height: 1.4),
+              style: TextStyle(
+                height: 1.5,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(
+              height: 4,
             ),
             Text(
               phone,
-              style: TextStyle(height: 1.4),
+              style: TextStyle(height: 1.4, color: Colors.black),
             ),
           ],
         ),

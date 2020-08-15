@@ -1,84 +1,52 @@
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery/models/account_details.dart';
-import 'package:grocery/models/cart_item.dart';
+import 'package:grocery/models/order.dart';
 import 'package:grocery/providers/cart.dart';
-import 'package:grocery/providers/user_info.dart';
+import 'package:grocery/providers/user_data.dart';
 import 'package:provider/provider.dart';
 
 class PlaceOrder extends ChangeNotifier {
-  placeCodOrder(context, Address address) {
-    Orders order = Orders(
-      time: Timestamp.now(),
-      deliveryId: (Random().nextInt(900000) + 1000000).toString(),
-      address: address,
-      items: Provider.of<Cart>(context, listen: false).cartItemList,
-      orderId: 'CP' + (Random().nextInt(900000) + 1000000).toString(),
-      status: '',
-      total: Provider.of<Cart>(context, listen: false).subTotal,
+  String _orderId;
+  String get orderId => _orderId;
+
+  Future<bool> placeCodOrder(
+      {BuildContext context,
+      Address address,
+      bool cod,
+      String paymentId}) async {
+    bool status = false;
+    genetateOrderId();
+    OrderModel order = OrderModel(
+      orderedAt: Timestamp.now(),
+      orderId: _orderId,
+      totalPrice: Provider.of<Cart>(context, listen: false).subTotal,
+      orderStatus: 'ORDER-PLACES',
+      cod: cod,
+      paymentId: paymentId ?? '',
+      orderItems: Provider.of<Cart>(context, listen: false).cartItemList,
+      orderAddress: address.wholeAddress(),
       userId: Provider.of<UserData>(context, listen: false).uid,
+      phone: Provider.of<UserData>(context, listen: false).phoneNumber,
+      name: Provider.of<UserData>(context, listen: false).accountDetailes.name,
     );
-    print(order);
-    // Firestore.instance.collection('orders').add({order.tojson()});
-  }
-}
 
-class Orders {
-  final Timestamp time;
-  final String deliveryId;
-  final Address address;
-  final List<CartItem> items;
-  final String orderId;
-  final String status;
-  final double total;
-  final String userId;
-
-  Orders(
-      {this.time,
-      this.deliveryId,
-      this.address,
-      this.items,
-      this.orderId,
-      this.status,
-      this.total,
-      this.userId});
-  Map<String, dynamic> tojson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['time'] = time;
-    data['deliveryId'] = deliveryId;
-    data['address'] = address.toJson();
-    data['items'] = items;
-    data['orderId'] = orderId;
-    data['status'] = status;
-    data['total'] = total;
-    data['userId'] = userId;
-
-    return data;
+    await Firestore.instance
+        .collection('orders')
+        .add(order.toJson())
+        .then((value) {
+      if (value != null) {
+        status = true;
+      } else {
+        status = false;
+      }
+    });
+    return status;
   }
 
-/*   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['phone_number'] = this.phoneNumber;
-    if (this.addresses != null) {
-      data['addresses'] = this.addresses.map((v) => v.toJson()).toList();
-    }
-    return data;
-  } */
+  genetateOrderId() {
+    _orderId = 'CP' + (Random().nextInt(900000) + 1000000).toString();
+    notifyListeners();
+  }
 }
-/* 
-Datetime "2020-07-24 11:56:21.938"
-deliverId "NHrHH2BrWXRxw8WMk5Lo9RSOMgF2"
-deliveryboyName "rr"
-locality "Reshma Bhavan,Attingal"
-(string)
-orderid "1DhlXewlQm6wD4Qjr2oI"
-phone "7012676747"
-status "Delivered"
-storeid "mvPXkYvrb9IIsMJrIUUw"
-total "100.0"
-userId "kCwwKQYsGxasdQQ85xQOaJPzwek2"
-username "Renjithbhasi"
- */

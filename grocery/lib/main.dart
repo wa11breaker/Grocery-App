@@ -8,9 +8,10 @@ import 'package:grocery/screens/splash_screen/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'providers/get_banners.dart';
 import 'providers/get_category.dart';
+import 'providers/get_featured.dart';
 import 'providers/login_provider.dart';
 import 'providers/place_order.dart';
-import 'providers/user_info.dart';
+import 'providers/user_data.dart';
 import 'utilities/appStrings.dart';
 import 'utilities/color.dart';
 
@@ -46,6 +47,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<PlaceOrder>(
           create: (context) => PlaceOrder(),
         ),
+        ChangeNotifierProvider<FeaturedProduct>(
+          create: (context) => FeaturedProduct(),
+        ),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
@@ -75,13 +79,12 @@ class MyApp extends StatelessWidget {
             color: Colors.transparent,
             elevation: 0,
             iconTheme: IconThemeData(
-              color: grey,
+              color: primaryColor,
             ),
           ),
         ),
         debugShowCheckedModeBanner: false,
         home: //Root()
-
             StreamBuilder<FirebaseUser>(
           stream: FirebaseAuth.instance.onAuthStateChanged,
           builder: (context, snapshot) {

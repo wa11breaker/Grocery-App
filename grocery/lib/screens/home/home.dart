@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grocery/providers/filter_grid.dart';
+import 'package:grocery/providers/get_featured.dart';
 import 'package:grocery/utilities/color.dart';
 import 'package:grocery/widgets/grid_item.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +9,7 @@ import 'widgets/filter_widget.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Provider.of<FilterProvider>(context, listen: false).getFilterResult('');
+    // Provider.of<FilterProvider>(context, listen: false).getFilterResult('');
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -42,11 +42,14 @@ class HomeScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline5,
                 ),
               ),
-              Consumer<FilterProvider>(
-                builder: (context, filter, child) => filter.loadingFilterResult
-                    ? Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: primaryColor,
+              Consumer<FeaturedProduct>(
+                builder: (context, filter, child) => filter.loading
+                    ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            backgroundColor: primaryColor,
+                          ),
                         ),
                       )
                     : RefreshIndicator(
@@ -58,7 +61,7 @@ class HomeScreen extends StatelessWidget {
                           padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
                           physics: ClampingScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: 4,
+                          itemCount: filter.featuredProduct.length,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
@@ -67,10 +70,9 @@ class HomeScreen extends StatelessWidget {
                             childAspectRatio: .8,
                           ),
                           itemBuilder: (BuildContext context, int index) {
-                            return /* Container(
-                              color: Colors.black,
-                            ); */
-                                GridItem(item: filter.filterList[index]);
+                            return GridItem(
+                              item: filter.featuredProduct[index],
+                            );
                           },
                         ),
                       ),

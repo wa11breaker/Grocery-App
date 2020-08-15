@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grocery/providers/user_info.dart';
+import 'package:grocery/providers/user_data.dart';
 import 'package:grocery/screens/address/address_scree.dart';
 import 'package:grocery/utilities/color.dart';
 import 'package:grocery/widgets/address_block.dart';

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:grocery/providers/user_info.dart';
+import 'package:grocery/providers/user_data.dart';
 import 'package:grocery/services/shared_prefs.dart';
 import 'package:provider/provider.dart';
 

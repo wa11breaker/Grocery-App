@@ -17,7 +17,8 @@ class Filter extends StatefulWidget {
 class _FilterState extends State<Filter> {
   @override
   Widget build(BuildContext context) {
-    Provider.of<FilterProvider>(context, listen: false).getFilterResult('');
+    Provider.of<FilterProvider>(context, listen: false)
+        .getFilterResult(widget.category.id);
     return Consumer<FilterProvider>(
       builder: (context, filter, child) => Scaffold(
         backgroundColor: Colors.white,
@@ -33,21 +34,23 @@ class _FilterState extends State<Filter> {
                   backgroundColor: primaryColor,
                 ),
               )
-            : GridView.builder(
-                padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
-                physics: ClampingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: filter.filterList.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 24,
-                  childAspectRatio: .8,
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return GridItem(item: filter.filterList[index]);
-                },
-              ),
+            : filter.filterResult.length == 0
+                ? Center(child: Text('No products found'))
+                : GridView.builder(
+                    padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
+                    physics: ClampingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: filter.filterResult.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 24,
+                      childAspectRatio: .8,
+                    ),
+                    itemBuilder: (BuildContext context, int index) {
+                      return GridItem(item: filter.filterResult[index]);
+                    },
+                  ),
       ),
     );
   }

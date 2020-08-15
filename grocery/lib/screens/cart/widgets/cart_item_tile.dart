@@ -33,96 +33,102 @@ class CartItemTile extends StatelessWidget {
                   SizedBox(
                     width: 16,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        value.cartItemList[index].title,
-                        maxLines: 2,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          child: Text(
+                            value.cartItemList[index].title,
+                            maxLines: 3,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                            ),
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text(
-                        '₹ ' +
-                            value.cartItemList[index].price.toString() +
-                            ' / ' +
-                            value.cartItemList[index].unit,
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [
-                          // GestureDetector(
-                          //   onTap: () => value.remove(value.cartItemList[index].id),
-                          //   child: Container(
-                          //     width: 40,
-                          //     height: 40,
-                          //     decoration: BoxDecoration(
-                          //       borderRadius: BorderRadius.circular(8),
-                          //       color: lightGrey,
-                          //     ),
-                          //     alignment: Alignment.center,
-                          //     child: Icon(
-                          //       Icons.delete,
-                          //       color: Colors.grey[900],
-                          //     ),
-                          //   ),
-                          // ),
-                          GestureDetector(
-                            onTap: () =>
-                                value.decrement(value.cartItemList[index].id),
-                            child: Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: lightGrey,
-                              ),
-                              alignment: Alignment.center,
-                              child: Icon(
-                                Icons.remove,
-                                color: Colors.grey[700],
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Text(
-                              value.cartItemList[index].quandity.toString(),
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          '₹ ' +
+                              value.cartItemList[index].price.toString() +
+                              ' / ' +
+                              value.cartItemList[index].unit,
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Row(
+                          children: [
+                            // GestureDetector(
+                            //   onTap: () => value.remove(value.cartItemList[index].id),
+                            //   child: Container(
+                            //     width: 40,
+                            //     height: 40,
+                            //     decoration: BoxDecoration(
+                            //       borderRadius: BorderRadius.circular(8),
+                            //       color: lightGrey,
+                            //     ),
+                            //     alignment: Alignment.center,
+                            //     child: Icon(
+                            //       Icons.delete,
+                            //       color: Colors.grey[900],
+                            //     ),
+                            //   ),
+                            // ),
+                            GestureDetector(
+                              onTap: () =>
+                                  value.decrement(value.cartItemList[index].id),
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: lightGrey,
+                                ),
+                                alignment: Alignment.center,
+                                child: Icon(
+                                  Icons.remove,
+                                  color: Colors.grey[700],
+                                ),
                               ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () =>
-                                value.increment(value.cartItemList[index].id),
-                            child: Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: lightGrey,
-                              ),
-                              alignment: Alignment.center,
-                              child: Icon(
-                                Icons.add,
-                                color: Colors.grey[700],
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Text(
+                                value.cartItemList[index].quandity.toString(),
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                            GestureDetector(
+                              onTap: () =>
+                                  value.increment(value.cartItemList[index].id),
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: lightGrey,
+                                ),
+                                alignment: Alignment.center,
+                                child: Icon(
+                                  Icons.add,
+                                  color: Colors.grey[700],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                   Spacer(),
                   Text(

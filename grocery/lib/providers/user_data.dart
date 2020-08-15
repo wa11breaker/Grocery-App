@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery/models/account_details.dart';
 import 'package:grocery/services/firebase_api.dart';
-import 'package:grocery/widgets/profile_setup_alert.dart';
 
 class UserData extends ChangeNotifier {
   String _id;
@@ -20,22 +19,22 @@ class UserData extends ChangeNotifier {
   setUserId(String userId, phone) async {
     _id = userId;
     _number = phone;
-    notifyListeners();
   }
 
   getUserDetailes(context) async {
-    bool exist = await FAPI().checkUserDetail(_id);
-
-    if (exist) {
-      _accountDetails = AccountDetails.fromDocument(
-        await FAPI().getUserDetail(_id),
-      );
-      _profileNotFound = false;
-      notifyListeners();
-    } else {
-      _profileNotFound = true;
-      notifyListeners();
-      // showAlert(context);
+    if (_accountDetails == null) {
+      bool exist = await FAPI().checkUserDetail(_id);
+      if (exist) {
+        _accountDetails = AccountDetails.fromDocument(
+          await FAPI().getUserDetail(_id),
+        );
+        _profileNotFound = false;
+        notifyListeners();
+      } else {
+        _profileNotFound = true;
+        notifyListeners();
+        // showAlert(context);
+      }
     }
   }
 

@@ -10,7 +10,6 @@ class AccountDetails {
     phoneNumber = json['phone_number'];
     if (json['addresses'] != null) {
       addresses = new List<Address>();
-      print(json["addresses"]);
       addresses = (json['addresses'] as List)
           ?.map((e) => e == null ? null : Address.fromDocument(e))
           ?.toList();

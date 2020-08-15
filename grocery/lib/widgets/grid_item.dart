@@ -29,7 +29,7 @@ class GridItem extends StatelessWidget {
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
-              if (item.isAvilable) {
+              if (item.inStock) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -42,8 +42,10 @@ class GridItem extends StatelessWidget {
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
+                SizedBox(
+                  height: 8,
+                ),
                 Flexible(
                   child: Stack(
                     children: [
@@ -51,13 +53,24 @@ class GridItem extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Hero(
                           tag: item.imgUrl + item.id,
-                          child: Image.network(
-                            item.imgUrl,
-                            // color: Colors.black,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(8),
+                              topRight: Radius.circular(8),
+                            ),
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: Image.network(
+                                item.imgUrl,
+                                fit: BoxFit.contain,
+
+                                // color: Colors.black,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                      if (!item.isAvilable)
+                      if (!item.inStock)
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Container(
