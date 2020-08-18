@@ -19,16 +19,19 @@ class SingnIn extends ChangeNotifier {
     // ignore: unused_local_variable
     FirebaseUser user;
     _loading = true;
-    _signInError = false;
-    _signInSucceess=true;
+
     notifyListeners();
 
     try {
       AuthResult result = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: userName, password: password);
       user = result.user;
-      _loading = false;
-      notifyListeners();
+      if (user != null) {
+        _loading = false;
+        _signInSucceess = true;
+        _signInError = false;
+        notifyListeners();
+      }
     } catch (error) {
       switch (error.code) {
         case "ERROR_INVALID_EMAIL":

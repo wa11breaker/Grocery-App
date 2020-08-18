@@ -1,177 +1,37 @@
+import 'package:admin/provider/delivery_boy.dart';
+import 'package:admin/screens/orders/accepted_order.dart';
+import 'package:admin/screens/orders/newOrders.dart';
+import 'package:admin/utilities/color.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class Orders extends StatefulWidget {
-  @override
-  _OrdersState createState() => _OrdersState();
-}
-
-class _OrdersState extends State<Orders> {
-  List<User> users;
-
-  bool sort;
-
-  @override
-  void initState() {
-    sort = false;
-    users = User.getUsers();
-    super.initState();
-  }
-
+class Orders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(32),
-      child: Card(child: buildDataTable()),
+    Provider.of<DeliveryBoyProvider>(context, listen: false)
+        .fetchDeliveryBoyLIst();
+
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        appBar: TabBar(
+          labelColor: primaryColor,
+          tabs: [
+            Tab(text: 'New Orders'),
+            Tab(text: 'Accepted Orders'),
+            Tab(text: 'Assigned Orders'),
+            Tab(text: 'Delivered Orders'),
+          ],
+        ),
+        body: TabBarView(
+          children: [
+            NewOrders(),
+            Accepted(),
+            Icon(Icons.directions_bike),
+            Icon(Icons.directions_bike),
+          ],
+        ),
+      ),
     );
-  }
-
-  DataTable buildDataTable() {
-    return DataTable(
-      showCheckboxColumn: false,
-      columns: [
-        DataColumn(
-          label: Text("Order ID"),
-          numeric: false,
-        ),
-        DataColumn(
-          label: Text("Customer Phone"),
-          numeric: false,
-          // tooltip: "This is Last Name",
-        ),
-        DataColumn(
-          label: Text("Customer Address"),
-          numeric: false,
-        ),
-        DataColumn(
-          label: Text("Delivery Time Slot"),
-          numeric: false,
-        ),
-        DataColumn(
-          label: Text("Assigned To"),
-          numeric: false,
-        ),
-        DataColumn(
-          label: Text("Bag ID"),
-          numeric: false,
-        ),
-        DataColumn(
-          label: Text("Delivery Status"),
-          numeric: false,
-        )
-      ],
-      rows: users
-          .map(
-            (user) => DataRow(
-              // selected: selectedUsers.contains(user),
-              onSelectChanged: (b) {},
-              cells: [
-                DataCell(
-                  Text(user.orderID),
-                  onTap: () {
-                    print('Selected ${user.orderID}');
-                  },
-                ),
-                DataCell(
-                  Text(user.customerPhone),
-                ),
-                DataCell(
-                  Text(user.customerAddress),
-                ),
-                DataCell(
-                  Text(user.deliveryTime),
-                ),
-                DataCell(
-                  Text(user.assignedTo),
-                ),
-                DataCell(
-                  Text(user.bagID),
-                ),
-                DataCell(
-                  Text(user.deliveryStatus),
-                )
-              ],
-            ),
-          )
-          .toList(),
-    );
-  }
-}
-
-class User {
-  String orderID;
-  String customerPhone;
-  String customerAddress;
-  String deliveryTime;
-  String assignedTo;
-  String bagID;
-  String deliveryStatus;
-  User(
-      {this.orderID,
-      this.customerPhone,
-      this.customerAddress,
-      this.deliveryTime,
-      this.assignedTo,
-      this.bagID,
-      this.deliveryStatus});
-
-  static List<User> getUsers() {
-    return <User>[
-      User(
-          orderID: '0001',
-          customerPhone: '7356220556',
-          customerAddress: 'Sreehari Decent Jn po Kollam',
-          deliveryTime: '10:30 - 12:30',
-          assignedTo: 'foo',
-          bagID: '345',
-          deliveryStatus: 'Delivered'),
-      User(
-          orderID: 'sdasdf',
-          customerPhone: '7356220556',
-          customerAddress: 'Sreehari Decent Jn po Kollam',
-          deliveryTime: '10:30-12:30',
-          assignedTo: 'foo',
-          bagID: '345',
-          deliveryStatus: 'Delivered'),
-      User(
-          orderID: 'sdasdf',
-          customerPhone: '7356220556',
-          customerAddress: 'Sreehari Decent Jn po Kollam',
-          deliveryTime: '10:30 - 12:30',
-          assignedTo: 'foo',
-          bagID: '345',
-          deliveryStatus: 'Delivered'),
-      User(
-          orderID: 'sdasdf',
-          customerPhone: '7356220556',
-          customerAddress: 'Sreehari Decent Jn po Kollam',
-          deliveryTime: '10:30-12:30',
-          assignedTo: 'foo',
-          bagID: '345',
-          deliveryStatus: 'Delivered'),
-      User(
-          orderID: 'sdasdf',
-          customerPhone: '7356220556',
-          customerAddress: 'Sreehari Decent Jn po Kollam',
-          deliveryTime: '10:30-12:30',
-          assignedTo: 'foo',
-          bagID: '345',
-          deliveryStatus: 'Delivered'),
-      User(
-          orderID: 'sdasdf',
-          customerPhone: '7356220556',
-          customerAddress: 'Sreehari Decent Jn po Kollam',
-          deliveryTime: '10:30-12:30',
-          assignedTo: 'foo',
-          bagID: '345',
-          deliveryStatus: 'Delivered'),
-      User(
-          orderID: 'sdasdf',
-          customerPhone: '7356220556',
-          customerAddress: 'Sreehari Decent Jn po Kollam',
-          deliveryTime: '10:30-12:30',
-          assignedTo: 'foo',
-          bagID: '345',
-          deliveryStatus: 'Delivered')
-    ];
   }
 }

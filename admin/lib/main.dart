@@ -1,7 +1,12 @@
+import 'package:admin/models/order_model.dart';
 import 'package:admin/provider/category_items_switch.dart';
+import 'package:admin/provider/delivery_boy.dart';
 import 'package:admin/provider/sign_in.dart';
+import 'package:admin/provider/banners.dart';
 import 'package:admin/screens/home/home.dart';
 import 'package:admin/screens/login/login.dart';
+import 'package:admin/services/firebase_services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'provider/category_provider.dart';
@@ -33,6 +38,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        StreamProvider<List<OrderModel>>(
+          create: (_) => FAPI().orders(),
+        ),
         ChangeNotifierProvider<SingnIn>(
           create: (context) => SingnIn(),
         ),
@@ -47,6 +55,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<ItemProvider>(
           create: (context) => ItemProvider(),
+        ),
+        ChangeNotifierProvider<DeliveryBoyProvider>(
+          create: (context) => DeliveryBoyProvider(),
+        ),
+        ChangeNotifierProvider<BannerProvider>(
+          create: (context) => BannerProvider(),
         )
       ],
       child: MaterialApp(
@@ -56,11 +70,24 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         debugShowCheckedModeBanner: false,
-        home: //Home()
+        home:
+            /* StreamBuilder(
+          stream: FirebaseAuth.instance.onAuthStateChanged,
+          builder: (ctx, usersnapShot) {
+            if (usersnapShot.hasData) {
+              return Home();
+            }
+            if (usersnapShot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            }
+            return Login();
+          },
+        ), */
 
+            // Home()
             Consumer<SingnIn>(
           builder: (context, value, child) =>
-              !value.signInSuccess ? Home() : Login(),
+              value.signInSuccess ? Home() : Login(),
         ),
       ),
     );

@@ -1,39 +1,47 @@
-import 'package:flutter/foundation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ItemModel {
-  final String categoryId;
-  final String name;
-  final String image;
-  final String description;
-  final int price;
-  final String unit;
-  final String status;
-
-  ItemModel({
-    @required this.description,
-    @required this.price,
-    @required this.unit,
-    @required this.status,
-    @required this.name,
-    @required this.categoryId,
-    @required this.image,
-  })  : assert(name != null),
-        assert(categoryId != null),
-        assert(image != null),
-        assert(description != null),
-        assert(price != null),
-        assert(unit != null),
-        assert(status != null);
-
-  factory ItemModel.fromDoc(Map doc) {
-    return ItemModel(
-      categoryId: doc['categoryId'],
-      name: doc['name'],
-      image: doc['image'] ?? '',
-      description: doc['description'],
-      price: doc['price'],
-      status: doc['status'],
-      unit: doc['unit'],
+class ItemModle {
+  String id;
+  String title;
+  double price;
+  String imgUrl;
+  String description;
+  String unit;
+  bool inStock;
+  ItemModle({
+    this.id,
+    this.title,
+    this.price,
+    this.imgUrl,
+    this.description,
+    this.unit,
+    this.inStock,
+  });
+  factory ItemModle.formDocument(DocumentSnapshot doc) {
+    Map data = doc.data;
+    return ItemModle(
+      id: doc.documentID,
+      title: data['name'],
+      price: data['price'].runtimeType == int
+          ? data['price'].toDouble()
+          : data['price'],
+      imgUrl: data['image'],
+      description: data['description'],
+      unit: data['unit'],
+      inStock: data['inStock'],
     );
   }
 }
+//! TODO
+/* TODO
+
+description 
+image 
+inStock true
+name "Fresho Chicken - Curry Cut Without Skin"
+price 125
+unit "1kg" 
+
+
+
+ */

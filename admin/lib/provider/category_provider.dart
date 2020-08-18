@@ -1,6 +1,7 @@
 import 'package:admin/models/category_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class CategoryProvider extends ChangeNotifier {
   List<CategoryModel> _categoryList = List();
@@ -12,10 +13,8 @@ class CategoryProvider extends ChangeNotifier {
   getCategory() async {
     _loadingCategory = true;
     _categoryList.clear();
-    DocumentSnapshot cat = await Firestore.instance
-        .collection('container')
-        .document('category')
-        .get();
+    DocumentSnapshot cat =
+        await Firestore.instance.collection('store').document('category').get();
     for (var i in cat.data['categoryList']) {
       _categoryList.add(CategoryModel.fromDoc(i));
     }
@@ -24,8 +23,9 @@ class CategoryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  addNewCategory({String categoryId, categoryName, categoryImage}) {
-    Firestore.instance.collection('container').document('category').updateData({
+  addNewCategory(
+      {BuildContext context, String categoryId, categoryName, categoryImage}) {
+    Firestore.instance.collection('store').document('category').updateData({
       "categoryList": FieldValue.arrayUnion([
         {
           'categoryId': categoryId,
@@ -40,12 +40,15 @@ class CategoryProvider extends ChangeNotifier {
         'categoryImage': categoryImage,
       }));
       notifyListeners();
+
       Firestore.instance
-          .collection('container')
+          .collection('store')
           .document('items')
           .collection('category')
           .document(categoryId)
-          .setData({'exists': true});
+          .setData({'exists': true}).then(
+        (value) => Navigator.of(context).pop(),
+      );
     });
   }
 }

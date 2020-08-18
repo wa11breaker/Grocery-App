@@ -14,20 +14,20 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<User> users;
+  // List<User> users;
   List<Widget> screen = [
-    Dashboard(),
     Orders(),
+    Dashboard(),
     SlelctCategoryItems(),
     Banners(),
-    DeleveryBoy()
+    DeleveryBoy(),
   ];
   bool sort;
 
   @override
   void initState() {
     sort = false;
-    users = User.getUsers();
+    // users = User.getUsers();
     super.initState();
   }
 

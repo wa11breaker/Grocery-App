@@ -21,45 +21,16 @@ class CategoryTile extends StatelessWidget {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Tooltip(
-                  message: 'Upload category image',
-                  waitDuration: Duration(seconds: 1),
-                  textStyle: TextStyle(fontSize: 10, color: Colors.white),
-                  child: MouseRegion(
-                    cursor: SystemMouseCursors.click,
-                    child: CircleAvatar(
-                      minRadius: 50,
-                      backgroundColor: primaryColor,
-                      child: Icon(
-                        Icons.cloud_upload,
-                        color: Colors.white,
-                      ),
+                CircleAvatar(
+                  maxRadius: 60,
+                  backgroundColor: primaryColor,
+                  child: ClipOval(
+                    child: Image.network(
+                      categoryModel.categoryImage,
+                      height: 100,
+                      width: 100,
+                      fit: BoxFit.cover,
                     ),
-                  ),
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                Container(
-                  width: 300,
-                  decoration: BoxDecoration(
-                    color: lightGrey,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: TextField(
-                    keyboardType: TextInputType.number,
-                    cursorColor: primaryColor,
-                    style: TextStyle(
-                      fontSize: 12,
-                      letterSpacing: 1,
-                      color: Colors.black,
-                    ),
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Category name',
-                        hintStyle: TextStyle(fontSize: 12),
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 16)),
                   ),
                 ),
                 SizedBox(
@@ -81,7 +52,7 @@ class CategoryTile extends StatelessWidget {
                     ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Category ID',
+                      hintText: 'New Category name',
                       hintStyle: TextStyle(fontSize: 12),
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 16),
@@ -136,8 +107,10 @@ class CategoryTile extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
+                SizedBox(
+                  width: 45,
+                  height: 45,
+                  child: Image.network(
                     categoryModel.categoryImage,
                   ),
                 ),

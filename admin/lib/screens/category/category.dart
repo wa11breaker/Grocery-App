@@ -3,11 +3,12 @@ import 'package:admin/screens/category/widgets/category_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
-import 'widgets/add_new_category.dart';
+import 'widgets/add_new_button.dart';
 
 class Category extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Provider.of<CategoryProvider>(context, listen: false).getCategory();
     return Padding(
       padding: const EdgeInsets.all(32),
       child: Column(

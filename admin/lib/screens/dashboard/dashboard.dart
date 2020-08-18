@@ -1,6 +1,5 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
-import 'package:file_picker_web/file_picker_web.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase/firebase.dart' as fb;
 
@@ -47,7 +46,7 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
- /*  uploadToFirebase(File imageFile) async {
+  /*  uploadToFirebase(File imageFile) async {
     // final filePath = 'category/${DateTime.now()}.png';
 // File file = await FilePicker.getFile();
     // print(file.relativePath);
