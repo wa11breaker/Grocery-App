@@ -1,0 +1,85 @@
+{
+  "project_info": {
+    "project_number": "559314550489",
+    "firebase_url": "https://capital-supply-6dee7.firebaseio.com",
+    "project_id": "capital-supply-6dee7",
+    "storage_bucket": "capital-supply-6dee7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:559314550489:android:dac1780c0df82953bd08c8",
+        "android_client_info": {
+          "package_name": "com.capitalsupply.grocery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "559314550489-jqoinl1bu92qv504fc8l68efvuu9os7e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.capitalsupply.grocery",
+            "certificate_hash": "aef7ed75f9bc6af3f570bbb31dae2f7908dd13ee"
+          }
+        },
+        {
+          "client_id": "559314550489-c3op0i7sveomcusss5up2990mdpl8juv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.capitalsupply.grocery",
+            "certificate_hash": "06190cc2946a40bdac7fe9a2c9f8eaeabb80ba89"
+          }
+        },
+        {
+          "client_id": "559314550489-pe5bpm7a4m7ouf1ubag7l9rfnv73n3vj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRf17zIXHHewbWnmE4H2wv_w7Om11Ich0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "559314550489-pe5bpm7a4m7ouf1ubag7l9rfnv73n3vj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:559314550489:android:e8b506baa4098fb3bd08c8",
+        "android_client_info": {
+          "package_name": "com.capitalsypply.db"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "559314550489-pe5bpm7a4m7ouf1ubag7l9rfnv73n3vj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRf17zIXHHewbWnmE4H2wv_w7Om11Ich0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "559314550489-pe5bpm7a4m7ouf1ubag7l9rfnv73n3vj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
