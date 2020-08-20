@@ -1,4 +1,5 @@
 import 'package:delevery_app/screen/login/login_screen.dart';
+import 'package:delevery_app/utilites/color.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'screen/home/home_screen.dart';
@@ -15,9 +16,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Capital DB',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        // primarySwatch: primaryColor,
+        primaryColor: primaryColor,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      debugShowCheckedModeBanner: false,
       home: StreamBuilder(
         stream: FirebaseAuth.instance.onAuthStateChanged,
         builder: (BuildContext context, snapshot) {
@@ -28,7 +31,7 @@ class MyApp extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          return Home();
+          return Login();
         },
       ),
     );
