@@ -8,6 +8,7 @@ class ItemModle {
   String description;
   String unit;
   bool inStock;
+  bool isFeatured;
   ItemModle({
     this.id,
     this.title,
@@ -16,20 +17,21 @@ class ItemModle {
     this.description,
     this.unit,
     this.inStock,
+    this.isFeatured,
   });
   factory ItemModle.formDocument(DocumentSnapshot doc) {
     Map data = doc.data;
     return ItemModle(
-      id: doc.documentID,
-      title: data['name'],
-      price: data['price'].runtimeType == int
-          ? data['price'].toDouble()
-          : data['price'],
-      imgUrl: data['image'],
-      description: data['description'],
-      unit: data['unit'],
-      inStock: data['inStock'],
-    );
+        id: doc.documentID,
+        title: data['name'],
+        price: data['price'].runtimeType == int
+            ? data['price'].toDouble()
+            : data['price'],
+        imgUrl: data['image'],
+        description: data['description'],
+        unit: data['unit'],
+        inStock: data['inStock'],
+        isFeatured: data['isFeatured'] ?? false);
   }
 }
 //! TODO

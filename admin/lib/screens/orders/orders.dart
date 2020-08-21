@@ -1,5 +1,7 @@
 import 'package:admin/provider/delivery_boy.dart';
 import 'package:admin/screens/orders/accepted_order.dart';
+import 'package:admin/screens/orders/assigned_order.dart';
+import 'package:admin/screens/orders/delivered_order.dart';
 import 'package:admin/screens/orders/newOrders.dart';
 import 'package:admin/utilities/color.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,7 @@ class Orders extends StatelessWidget {
       length: 4,
       child: Scaffold(
         appBar: TabBar(
+          isScrollable: false,
           labelColor: primaryColor,
           tabs: [
             Tab(text: 'New Orders'),
@@ -27,8 +30,8 @@ class Orders extends StatelessWidget {
           children: [
             NewOrders(),
             Accepted(),
-            Icon(Icons.directions_bike),
-            Icon(Icons.directions_bike),
+            Assigned(),
+            Delivered(),
           ],
         ),
       ),

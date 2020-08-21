@@ -16,8 +16,8 @@ class Accepted extends StatelessWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
-            if (snapshot.data == null) {
-              return Center(child: Text('No New Orders'));
+            if (snapshot.data == null || snapshot.data.documents.length == 0) {
+              return Center(child: Text('No New Accepted Orders'));
             } else {
               return buildDataTable(snapshot.data.documents, context);
             }
@@ -92,31 +92,6 @@ class Accepted extends StatelessWidget {
                   DataCell(
                     Text(e['deliveryTime']),
                   ),
-                  /*   DataCell(
-                    Consumer<DeliveryBoyProvider>(
-                      builder: (context, value, _) => DropdownButton<String>(
-                        // value: dropdownValue,
-                        icon: Icon(Icons.arrow_downward),
-                        iconSize: 24,
-                        elevation: 16,
-                        style: TextStyle(color: Colors.deepPurple),
-                        underline: Container(
-                          height: 2,
-                          color: Colors.deepPurpleAccent,
-                        ),
-                        onChanged: (String newValue) {},
-                        items: value.deliveryBoy.map<DropdownMenuItem<String>>(
-                          (DeliveryBoyModle dBoy) {
-                            return DropdownMenuItem<String>(
-                              value: dBoy.name,
-                              child: Text(dBoy.name),
-                            );
-                          },
-                        ).toList(),
-                      ),
-                    ),
-                    onTap: () {},
-                  ), */
                 ],
               ),
             )
@@ -131,56 +106,95 @@ class Accepted extends StatelessWidget {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Order Detailes',
-                style: TextStyle(fontWeight: FontWeight.bold),
+            content: AssignOrderDilogeBox(
+          data: data,
+        ));
+      },
+    );
+  }
+}
+
+class AssignOrderDilogeBox extends StatefulWidget {
+  final DocumentSnapshot data;
+
+  const AssignOrderDilogeBox({Key key, this.data}) : super(key: key);
+  @override
+  _AssignOrderDilogeBoxState createState() => _AssignOrderDilogeBoxState();
+}
+
+class _AssignOrderDilogeBoxState extends State<AssignOrderDilogeBox> {
+  DeliveryBoyModle boyModle = DeliveryBoyModle();
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          'Order Detailes',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        Row(
+          children: [
+            Text('Assign order to'),
+            SizedBox(width: 16),
+            Consumer<DeliveryBoyProvider>(
+              builder: (context, value, _) => DropdownButton<String>(
+                // value: dropdownValue,
+                icon: Icon(Icons.arrow_downward),
+                iconSize: 24,
+                elevation: 16,
+                style: TextStyle(color: Colors.deepPurple),
+                underline: Container(
+                  height: 2,
+                  color: Colors.deepPurpleAccent,
+                ),
+                onChanged: (String newValue) {
+                  // boyModle = value.deliveryBoy
+                  //     .firstWhere((element) => element.id == newValue);
+                },
+                value: boyModle.name == null ? null : boyModle.name,
+                hint: Text('Select form dropdown'),
+                items: value.deliveryBoy.map<DropdownMenuItem<String>>(
+                  (DeliveryBoyModle dBoy) {
+                    return DropdownMenuItem<String>(
+                      value: dBoy.name,
+                      child: Text(dBoy.name),
+                      onTap: () {
+                        setState(() {
+                          boyModle = dBoy;
+                        });
+                      },
+                    );
+                  },
+                ).toList(),
               ),
-              Consumer<DeliveryBoyProvider>(
-                builder: (context, value, _) => DropdownButton<String>(
-                  // value: dropdownValue,
-                  icon: Icon(Icons.arrow_downward),
-                  iconSize: 24,
-                  elevation: 16,
-                  style: TextStyle(color: Colors.deepPurple),
-                  underline: Container(
-                    height: 2,
-                    color: Colors.deepPurpleAccent,
-                  ),
-                  onChanged: (String newValue) {},
-                  items: value.deliveryBoy.map<DropdownMenuItem<String>>(
-                    (DeliveryBoyModle dBoy) {
-                      return DropdownMenuItem<String>(
-                        value: dBoy.name,
-                        child: Text(dBoy.name),
-                      );
-                    },
-                  ).toList(),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            FlatButton(
+              onPressed: () async {
+                await Firestore.instance
+                    .collection('orders')
+                    .document(widget.data.documentID)
+                    .updateData({
+                  'orderStatus': 'ORDER-ASSIGNED',
+                  'dbID': boyModle.id,
+                }).then(
+                  (value) => Navigator.of(context).pop(),
+                );
+              },
+              child: Text(
+                'Assign Orders',
+                style: TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  FlatButton(
-                    onPressed: () async {
-                      await Firestore.instance
-                          .collection('orders')
-                          .document(data.documentID)
-                          .updateData({'orderStatus': 'ORDER-ACCEPTED'}).then(
-                        (value) => Navigator.of(context).pop(),
-                      );
-                    },
-                    child: Text(
-                      'Assign Orders',
-                      style: TextStyle(
-                        color: Colors.green,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  /*FlatButton(
+            ),
+            /*FlatButton(
                     onPressed: () async {
                       await Firestore.instance
                           .collection('orders')
@@ -197,24 +211,21 @@ class Accepted extends StatelessWidget {
                       ),
                     ),
                   ), */
-                  FlatButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      'Close',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        );
-      },
+            FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Close',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        )
+      ],
     );
   }
 }

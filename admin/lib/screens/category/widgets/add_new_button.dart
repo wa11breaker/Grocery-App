@@ -40,30 +40,42 @@ class _AddNewCategoryState extends State<AddNewCategory> {
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  child: Icon(
-                    Icons.add,
-                    color: primaryColor,
+                SizedBox(
+                  width: 45,
+                  height: 45,
+                  child: CircleAvatar(
+                    child: Icon(
+                      Icons.add,
+                      color: primaryColor,
+                    ),
+                    backgroundColor: Colors.white,
                   ),
-                  backgroundColor: Colors.white,
                 ),
                 SizedBox(
-                  width: 12,
+                  height: 16,
                 ),
                 Text(
                   'Add New Category',
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: lightGrey,
                   ),
                 ),
                 SizedBox(
-                  width: 12,
+                  height: 2,
+                ),
+                Text(
+                  '',
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.grey,
+                  ),
                 ),
               ],
             ),

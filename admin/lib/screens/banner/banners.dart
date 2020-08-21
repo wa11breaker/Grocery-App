@@ -45,12 +45,20 @@ class Banners extends StatelessWidget {
       );
     }
 
-    return Column(
-      children: [
-        Consumer<BannerProvider>(
-          builder: (context, value, _) => Padding(
-            padding: const EdgeInsets.all(32),
-            child: Wrap(
+    return Padding(
+      padding: const EdgeInsets.all(32),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'All Banners',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+          ),
+          SizedBox(
+            height: 32,
+          ),
+          Consumer<BannerProvider>(
+            builder: (context, value, _) => Wrap(
               runSpacing: 32,
               spacing: 32,
               children: [
@@ -155,8 +163,8 @@ class Banners extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

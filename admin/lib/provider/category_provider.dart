@@ -11,16 +11,20 @@ class CategoryProvider extends ChangeNotifier {
   bool get loadingCategory => _loadingCategory;
 
   getCategory() async {
-    _loadingCategory = true;
-    _categoryList.clear();
-    DocumentSnapshot cat =
-        await Firestore.instance.collection('store').document('category').get();
-    for (var i in cat.data['categoryList']) {
-      _categoryList.add(CategoryModel.fromDoc(i));
-    }
+    if (_categoryList.length == 0) {
+      _loadingCategory = true;
+      _categoryList.clear();
+      DocumentSnapshot cat = await Firestore.instance
+          .collection('store')
+          .document('category')
+          .get();
+      for (var i in cat.data['categoryList']) {
+        _categoryList.add(CategoryModel.fromDoc(i));
+      }
 
-    _loadingCategory = false;
-    notifyListeners();
+      _loadingCategory = false;
+      notifyListeners();
+    }
   }
 
   addNewCategory(
@@ -40,15 +44,7 @@ class CategoryProvider extends ChangeNotifier {
         'categoryImage': categoryImage,
       }));
       notifyListeners();
-
-      Firestore.instance
-          .collection('store')
-          .document('items')
-          .collection('category')
-          .document(categoryId)
-          .setData({'exists': true}).then(
-        (value) => Navigator.of(context).pop(),
-      );
+      Navigator.of(context).pop();
     });
   }
 }

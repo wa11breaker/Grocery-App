@@ -8,7 +8,6 @@ import 'dart:async';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html';
 import 'package:firebase/firebase.dart' as fb;
-import 'package:admin/provider/category_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class AddNewItems extends StatefulWidget {
@@ -28,7 +27,7 @@ class _AddNewItemsState extends State<AddNewItems> {
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
-          return AddItemsAlterDiloge();
+          return _AddItemsAlterDiloge();
         },
       );
     }
@@ -83,12 +82,12 @@ class _AddNewItemsState extends State<AddNewItems> {
   }
 }
 
-class AddItemsAlterDiloge extends StatefulWidget {
+class _AddItemsAlterDiloge extends StatefulWidget {
   @override
   AddItemsAlterDilogeState createState() => AddItemsAlterDilogeState();
 }
 
-class AddItemsAlterDilogeState extends State<AddItemsAlterDiloge> {
+class AddItemsAlterDilogeState extends State<_AddItemsAlterDiloge> {
   TextEditingController title = TextEditingController();
   TextEditingController price = TextEditingController();
   TextEditingController description = TextEditingController();
@@ -330,8 +329,8 @@ class AddItemsAlterDilogeState extends State<AddItemsAlterDiloge> {
                       inStock: instock,
                       isFeatured: isFeatured,
                       image: imageUrl,
+                      context: context,
                     );
-                    Navigator.of(context).pop();
                   }
                 },
               ),

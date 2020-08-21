@@ -5,6 +5,7 @@ import 'package:admin/screens/dashboard/dashboard.dart';
 import 'package:admin/screens/delivery_boy/delivery_boy.dart';
 import 'package:admin/screens/home/side_bar/side_bar.dart';
 import 'package:admin/screens/orders/orders.dart';
+import 'package:admin/screens/phone_order/phone_order.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,8 +17,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   // List<User> users;
   List<Widget> screen = [
+    PhoneOrderEntry(),
+    // Dashboard(),
     Orders(),
-    Dashboard(),
     SlelctCategoryItems(),
     Banners(),
     DeleveryBoy(),

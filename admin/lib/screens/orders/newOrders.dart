@@ -1,33 +1,69 @@
+import 'package:admin/services/send_message.dart';
+import 'package:admin/utilities/color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class NewOrders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: StreamBuilder(
-        stream: Firestore.instance
-            .collection('orders')
-            .where('orderStatus', isEqualTo: 'ORDER-PLACES')
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.active) {
-            if (snapshot.data == null) {
-              return Center(child: Text('No New Orders'));
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: StreamBuilder(
+          stream: Firestore.instance
+              .collection('orders')
+              .where('orderStatus', isEqualTo: 'ORDER-PLACES')
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              if (snapshot.data == null ||
+                  snapshot.data.documents.length == 0) {
+                return Center(child: Text('No New Orders'));
+              } else {
+                return buildDataTable(snapshot.data.documents, context);
+              }
             } else {
-              return buildDataTable(snapshot.data.documents, context);
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }
-          } else {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CircularProgressIndicator(),
+            // return buildDataTable();
+          },
+        ),
+      ),
+      floatingActionButton: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: () {},
+          child: Container(
+            decoration: BoxDecoration(
+              color: primaryColor,
+              borderRadius: BorderRadius.circular(4),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey[300],
+                  spreadRadius: 5,
+                  blurRadius: 10,
+                )
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Text(
+                'Add Orders',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
-            );
-          }
-          // return buildDataTable();
-        },
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -120,27 +156,33 @@ class NewOrders extends StatelessWidget {
               SizedBox(
                 height: 8,
               ),
-              ...data['orderItems']
-                  .map(
-                    (e) => ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(e['image']),
-                      ),
-                      title: Text(
-                        e['title'],
-                      ),
-                      subtitle: Row(
-                        children: [
-                          Text('Price ₹${e['price']}'),
-                          SizedBox(
-                            width: 16,
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ...data['orderItems']
+                        .map(
+                          (e) => ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage: NetworkImage(e['image']),
+                            ),
+                            title: Text(
+                              e['title'],
+                            ),
+                            subtitle: Row(
+                              children: [
+                                Text('Price ₹${e['price']}'),
+                                SizedBox(
+                                  width: 16,
+                                ),
+                                Text('Quandity ${e['quandity']}'),
+                              ],
+                            ),
                           ),
-                          Text('Quandity ${e['quandity']}'),
-                        ],
-                      ),
-                    ),
-                  )
-                  .toList(),
+                        )
+                        .toList(),
+                  ],
+                ),
+              ),
               SizedBox(
                 height: 16,
               ),
@@ -153,8 +195,15 @@ class NewOrders extends StatelessWidget {
                           .collection('orders')
                           .document(data.documentID)
                           .updateData({'orderStatus': 'ORDER-ACCEPTED'}).then(
-                        (value) => Navigator.of(context).pop(),
-                      );
+                              (value) {
+                        sendSMS(
+                          status: 'approved',
+                          name: data['name'],
+                          phone: data['phone'].toString().substring(2),
+                          orderID: data['orderId'],
+                        );
+                        Navigator.of(context).pop();
+                      });
                     },
                     child: Text(
                       'Accept Orders',
@@ -170,8 +219,15 @@ class NewOrders extends StatelessWidget {
                           .collection('orders')
                           .document(data.documentID)
                           .updateData({'orderStatus': 'ORDER-REJECTED'}).then(
-                        (value) => Navigator.of(context).pop(),
-                      );
+                              (value) {
+                        sendSMS(
+                          status: 'approved',
+                          name: data['name'],
+                          phone: data['phone'].toString().substring(2),
+                          orderID: data['orderId'],
+                        );
+                        Navigator.of(context).pop();
+                      });
                     },
                     child: Text(
                       'Reject Orders',

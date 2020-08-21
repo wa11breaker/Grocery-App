@@ -89,8 +89,6 @@ class CategoryTile extends StatelessWidget {
           Provider.of<CategoryItemSwitch>(context, listen: false).update(true);
         },
         child: Container(
-          // margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          // width: 100,
           decoration: BoxDecoration(
             color: lightGrey,
             borderRadius: BorderRadius.circular(8),
@@ -103,9 +101,9 @@ class CategoryTile extends StatelessWidget {
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
                   width: 45,
@@ -115,40 +113,26 @@ class CategoryTile extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 20,
+                  height: 16,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      categoryModel.categoryName,
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Text(
-                      categoryModel.categoryId,
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.normal,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
+                Text(
+                  categoryModel.categoryName,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 SizedBox(
-                  width: 12,
+                  height: 2,
                 ),
-                IconButton(
-                  icon: Icon(Icons.edit),
-                  color: Colors.grey,
-                  tooltip: 'Edit Category',
-                  onPressed: _showMyDialog,
-                )
+                Text(
+                  categoryModel.categoryId,
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.grey,
+                  ),
+                ),
               ],
             ),
           ),

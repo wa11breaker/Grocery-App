@@ -23,7 +23,7 @@ class _LoginState extends State<Login> {
       body: Row(
         children: [
           Expanded(
-            flex: 5,
+            flex: 7,
             child: Container(
               color: primaryColor,
               child: Center(
@@ -45,7 +45,7 @@ class _LoginState extends State<Login> {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Consumer<SingnIn>(
               builder: (context, value, child) => AutofillGroup(
                 child: Padding(

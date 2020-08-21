@@ -1,5 +1,6 @@
 import 'package:admin/models/item_model.dart';
 import 'package:admin/models/order_model.dart';
+import 'package:admin/models/phone_order_modle/categoryModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FAPI {
@@ -23,32 +24,28 @@ class FAPI {
     return _banners;
   }
 
-  // Future<List<Categorys>> category() async {
-  //   List<Categorys> _category = List<Categorys>();
+  Future<List<Categorys>> category() async {
+    List<Categorys> _category = List<Categorys>();
 
-  //   await Firestore.instance
-  //       .collection('store')
-  //       .document('category')
-  //       .get()
-  //       .then(
-  //     (doc) {
-  //       for (var i in doc.data['categoryList']) {
-  //         _category.add(Categorys.fromMap(i));
-  //       }
-  //     },
-  //   );
+    await Firestore.instance
+        .collection('store')
+        .document('category')
+        .get()
+        .then(
+      (doc) {
+        for (var i in doc.data['categoryList']) {
+          _category.add(Categorys.fromMap(i));
+        }
+      },
+    );
 
-  //   return _category;
-  // }
+    return _category;
+  }
 
   Future<List<ItemModle>> filter({String categoryId}) async {
     List<ItemModle> _category = List<ItemModle>();
 
-    await Firestore.instance
-        .collection('items')
-        .where('categoryId', isEqualTo: categoryId)
-        .getDocuments()
-        .then(
+    await Firestore.instance.collection('items').getDocuments().then(
       (doc) {
         for (var i in doc.documents) {
           _category.add(ItemModle.formDocument(i));

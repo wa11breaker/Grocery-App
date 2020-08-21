@@ -37,14 +37,23 @@ class SideBar extends StatelessWidget {
       height: double.infinity,
       color: primaryColor,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            width: 200,
-            height: 100,
-            color: primaryColor,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: FlutterLogo(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Container(
+              width: 200,
+              height: 150,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Image.asset(
+                  'assets/featured.png',
+                ),
+              ),
             ),
           ),
           ListView.builder(

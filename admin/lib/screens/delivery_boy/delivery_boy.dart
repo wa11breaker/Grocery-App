@@ -9,19 +9,31 @@ class DeleveryBoy extends StatelessWidget {
   Widget build(BuildContext context) {
     Provider.of<DeliveryBoyProvider>(context, listen: false)
         .fetchDeliveryBoyLIst();
-    return Consumer<DeliveryBoyProvider>(
-      builder: (context, value, _) => Padding(
-        padding: const EdgeInsets.all(32),
-        child: Center(
-          child: Wrap(
-            runSpacing: 32,
-            spacing: 32,
-            children: [
-              AddNewDeliveryBoy(),
-              ...value.deliveryBoy.map((e) => DeliveryTile(db: e)).toList(),
-            ],
+    return Padding(
+      padding: const EdgeInsets.all(32),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'All Delivery Boys',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
-        ),
+          SizedBox(
+            height: 32,
+          ),
+          Container(
+            child: Consumer<DeliveryBoyProvider>(
+              builder: (context, value, _) => Wrap(
+                runSpacing: 32,
+                spacing: 32,
+                children: [
+                  AddNewDeliveryBoy(),
+                  ...value.deliveryBoy.map((e) => DeliveryTile(db: e)).toList(),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -6,11 +6,14 @@ import 'package:admin/provider/banners.dart';
 import 'package:admin/screens/home/home.dart';
 import 'package:admin/screens/login/login.dart';
 import 'package:admin/services/firebase_services.dart';
+import 'package:admin/utilities/color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'provider/category_provider.dart';
 import 'provider/item_provider.dart';
+import 'provider/phone_order_logic/cart.dart';
+import 'provider/phone_order_logic/get_items.dart';
 import 'provider/screen_index.dart';
 
 void main() {
@@ -35,11 +38,18 @@ class MyApp extends StatelessWidget {
   MaterialColor accentColor = MaterialColor(0xFF337C36, color);
 
   @override
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider<FilterProvider>(
+          create: (context) => FilterProvider(),
+        ),
         StreamProvider<List<OrderModel>>(
           create: (_) => FAPI().orders(),
+        ),
+        ChangeNotifierProvider<Cart>(
+          create: (context) => Cart(),
         ),
         ChangeNotifierProvider<SingnIn>(
           create: (context) => SingnIn(),
@@ -64,32 +74,37 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
-        title: 'Admin',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        debugShowCheckedModeBanner: false,
-        home:
-            /* StreamBuilder(
-          stream: FirebaseAuth.instance.onAuthStateChanged,
-          builder: (ctx, usersnapShot) {
-            if (usersnapShot.hasData) {
-              return Home();
-            }
-            if (usersnapShot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
-            }
-            return Login();
-          },
-        ), */
+          title: 'Capital Supply Admin',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+          ),
+          debugShowCheckedModeBanner: false,
+          home:
+              /* StreamBuilder(
+            stream: _auth.onAuthStateChanged,
+            builder: (BuildContext context, snapshot) {
+              if (snapshot.hasData && (!snapshot.data.isAnonymous)) {
+                return Home();
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    valueColor: new AlwaysStoppedAnimation<Color>(primaryColor),
+                  ),
+                );
+              }
 
-            // Home()
-            Consumer<SingnIn>(
-          builder: (context, value, child) =>
-              value.signInSuccess ? Home() : Login(),
-        ),
-      ),
+              return Login();
+            },
+          ) */
+
+              Home()
+
+          //     Consumer<SingnIn>(
+          //   builder: (context, value, child) =>
+          //       value.signInSuccess ? Home() : Login(),
+          // ),
+          ),
     );
   }
 }
