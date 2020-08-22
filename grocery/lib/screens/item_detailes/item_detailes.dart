@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery/models/item.dart';
 import 'package:grocery/providers/cart.dart';
@@ -42,9 +43,9 @@ class ItemDetailes extends StatelessWidget {
                         ),
                         child: Hero(
                           tag: item.imgUrl + item.id,
-                          child: Image.network(
-                            item.imgUrl + item.id,
-                            // fit: BoxFit.cover,
+                          child: CachedNetworkImage(
+                            imageUrl: item.imgUrl,
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
@@ -61,12 +62,26 @@ class ItemDetailes extends StatelessWidget {
                             SizedBox(
                               height: 8,
                             ),
-                            Text(
-                              '₹' + item.price.toString(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline5
-                                  .copyWith(color: primaryColor),
+                            Row(
+                              children: [
+                                Text(
+                                  '₹' + item.price.toString(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline5
+                                      .copyWith(color: primaryColor),
+                                ),
+                                Text(
+                                  ' / ' + item.unit,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline5
+                                      .copyWith(
+                                        // color: primaryColor,
+                                        fontSize: 14,
+                                      ),
+                                ),
+                              ],
                             ),
                             SizedBox(
                               height: 16,

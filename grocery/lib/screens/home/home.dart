@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
               ), */
               SizedBox(height: 16),
               Offers(),
-              SizedBox(height: 32),
+              SizedBox(height: 16),
               Padding(
                 padding: const EdgeInsets.only(left: 16),
                 child: Text(
@@ -32,9 +32,9 @@ class HomeScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline5,
                 ),
               ),
-              SizedBox(height: 32),
+              SizedBox(height: 16),
               FilterWidget(),
-              SizedBox(height: 32),
+              SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.only(left: 16),
                 child: Text(
@@ -58,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                           await Future.delayed(Duration(seconds: 5));
                         },
                         child: GridView.builder(
-                          padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
+                          padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
                           physics: ClampingScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: filter.featuredProduct.length,

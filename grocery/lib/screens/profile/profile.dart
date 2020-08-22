@@ -85,19 +85,15 @@ class _ProfileState extends State<Profile> {
                 ),
                 SizedBox(
                   width: double.infinity,
-                  child: Card(
-                    elevation: 2,
-                    color: primaryColor,
-                    child: FlatButton(
-                      child: Text(
-                        '+ Add a new address',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddressScreen(),
-                        ),
+                  child: FlatButton(
+                    child: Text(
+                      '+ Add a new address',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddressScreen(),
                       ),
                     ),
                   ),

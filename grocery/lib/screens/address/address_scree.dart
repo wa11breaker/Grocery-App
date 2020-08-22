@@ -133,7 +133,7 @@ class _AddressScreenState extends State<AddressScreen> {
                             city: city,
                             state: state,
                             pincode: pincode,
-                            isDefault: true,
+                            isDefault: false,
                           ),
                           context: context,
                         );

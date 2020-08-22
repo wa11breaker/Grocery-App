@@ -15,7 +15,6 @@ class _SetUpProfileState extends State<SetUpProfile> {
   List<String> pincodes = [
     '695005',
     '695008',
-    '695562',
     '695040',
     '695002',
     '695003',

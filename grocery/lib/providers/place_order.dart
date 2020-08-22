@@ -11,12 +11,14 @@ class PlaceOrder extends ChangeNotifier {
   String _orderId;
   String get orderId => _orderId;
 
-  Future<bool> placeCodOrder(
-      {BuildContext context,
-      Address address,
-      bool cod,
-      String paymentId,
-      String deliveryTime}) async {
+  Future<bool> placeCodOrder({
+    BuildContext context,
+    Address address,
+    bool cod,
+    String paymentId,
+    String deliveryTime,
+    String deliveryDate,
+  }) async {
     bool status = false;
     genetateOrderId();
     OrderModel order = OrderModel(
@@ -32,6 +34,7 @@ class PlaceOrder extends ChangeNotifier {
       phone: Provider.of<UserData>(context, listen: false).phoneNumber,
       name: Provider.of<UserData>(context, listen: false).accountDetailes.name,
       deliveryTime: deliveryTime,
+      deliveryDay: deliveryDate,
     );
 
     await Firestore.instance

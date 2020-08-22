@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grocery/providers/cart.dart';
 import 'package:grocery/providers/get_banners.dart';
 import 'package:grocery/providers/get_category.dart';
 import 'package:grocery/providers/get_featured.dart';
@@ -103,13 +104,37 @@ class _RootState extends State<Root> {
     return BottomNavigationBar(
       backgroundColor: Colors.white,
       elevation: 10,
-      items: const <BottomNavigationBarItem>[
+      items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
           title: Text('Home'),
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.shopping_cart),
+          icon: Stack(
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Icon(
+                  Icons.shopping_cart,
+                ),
+              ),
+              Consumer<Cart>(
+                  builder: (context, value, _) => value.cartItemList.length > 0
+                      ? Align(
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 24),
+                            height: 8,
+                            width: 8,
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        )
+                      : SizedBox.shrink())
+            ],
+          ),
           title: Text('Cart'),
         ),
         BottomNavigationBarItem(

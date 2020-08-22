@@ -517,7 +517,6 @@ class _UpiPaymentState extends State<UpiPayment> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Select a delivery slot'),
-          //!TODO
           content: Consumer<UserData>(
             builder: (context, value, _) => SingleChildScrollView(
               child: Column(

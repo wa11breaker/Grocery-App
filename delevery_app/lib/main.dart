@@ -27,12 +27,24 @@ class MyApp extends StatelessWidget {
           if (snapshot.hasData && (!snapshot.data.isAnonymous)) {
             return Home();
           } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return Splash();
           }
           return Login();
         },
+      ),
+    );
+  }
+}
+
+class Splash extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Image.asset(
+          'assets/logo.jpg',
+          scale: 6,
+        ),
       ),
     );
   }

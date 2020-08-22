@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery/providers/cart.dart';
 import 'package:grocery/utilities/color.dart';
@@ -23,10 +24,13 @@ class CartItemTile extends StatelessWidget {
                     width: 60,
                     height: 60,
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          value.cartItemList[index].image,
-                        ),
+                      color: lightGrey,
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: CachedNetworkImage(
+                        imageUrl: value.cartItemList[index].image,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),

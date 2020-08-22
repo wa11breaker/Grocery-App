@@ -21,21 +21,23 @@ class OrderDetailes extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  customersDetails(data),
-                  Divider(),
-                  ListView.builder(
-                    physics: ClampingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: data['orderItems'].length,
-                    itemBuilder: (context, index) => ItemTile(
-                      item: data['orderItems'][index],
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    customersDetails(data),
+                    Divider(),
+                    ListView.builder(
+                      physics: ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: data['orderItems'].length,
+                      itemBuilder: (context, index) => ItemTile(
+                        item: data['orderItems'][index],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Container(
@@ -59,7 +61,10 @@ class OrderDetailes extends StatelessWidget {
                       actions: [
                         FlatButton(
                           onPressed: () => Navigator.of(context).pop(),
-                          child: Text('Cancle'),
+                          child: Text(
+                            'Cancle',
+                            style: TextStyle(color: Colors.grey[700]),
+                          ),
                         ),
                         FlatButton(
                           child: Text('Yes'),
@@ -77,6 +82,7 @@ class OrderDetailes extends StatelessWidget {
                                   phone: data['phone'].toString().substring(2),
                                   orderID: data['orderId'],
                                 );
+                                Navigator.of(context).pop();
                                 Navigator.of(context).pop();
                               },
                             );
@@ -101,9 +107,13 @@ class OrderDetailes extends StatelessWidget {
     String orderID,
   }) async {
     try {
-      http.get(
-        'https://2factor.in/API/R1/?module=TRANS_SMS&apikey=ed6e1d01-e2b8-11ea-9fa5-0200cd936042&to=$phone&from=CPTSPL&templatename=CPTSLY&var1=$name&var2=$orderID&var3=$status',
-      );
+      await http
+          .post(
+        'https://2factor.in/API/R1/?module=TRANS_SMS&apikey=ed6e1d01-e2b8-11ea-9fa5-0200cd936042&to=$phone&from=CPTSLY&templatename=CPTSLY&var1=$name&var2=$orderID&var3=$status',
+      )
+          .then((value) {
+        print(value.body);
+      });
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -136,6 +146,16 @@ class OrderDetailes extends StatelessWidget {
             '${data['orderAddress']}',
           ),
           SizedBox(height: 8),
+          Text(
+            data['deliveryTime'],
+            style: TextStyle(color: Colors.blue[900]),
+          ),
+          SizedBox(height: 8),
+          Text(
+            data['deliveryDay'] ?? '',
+            style: TextStyle(color: Colors.blue[900]),
+          ),
+          SizedBox(height: 8),
           RichText(
             text: TextSpan(
               text: '',
@@ -157,7 +177,8 @@ class OrderDetailes extends StatelessWidget {
             ),
           ),
           SizedBox(height: 8),
-          FlatButton(
+          RaisedButton(
+            elevation: 5,
             color: primaryColor,
             onPressed: () => _launchPhone(phoneNo: data['phone']),
             child: Text(

@@ -106,7 +106,7 @@ class CartScreen extends StatelessWidget {
                                 ),
                               ),
                               Spacer(),
-                              Text('Totoal Price :  '),
+                              Text('Total Price :  '),
                               Text(
                                 '₹ ' + value.subTotal.toString(),
                                 style: TextStyle(

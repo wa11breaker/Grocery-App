@@ -1,18 +1,16 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grocery/providers/cart.dart';
-import 'package:grocery/providers/filter_grid.dart';
-import 'package:grocery/screens/_init/root.dart';
-import 'package:grocery/screens/login/login.dart';
-import 'package:grocery/screens/splash_screen/splash_screen.dart';
+import 'providers/filter_grid.dart';
 import 'package:provider/provider.dart';
 import 'providers/get_banners.dart';
 import 'providers/get_category.dart';
 import 'providers/get_featured.dart';
 import 'providers/login_provider.dart';
 import 'providers/place_order.dart';
+import 'providers/splash_screen.dart';
 import 'providers/user_data.dart';
+import 'screens/splash_screen/splash.dart';
 import 'utilities/appStrings.dart';
 import 'utilities/color.dart';
 
@@ -55,6 +53,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<FeaturedProduct>(
           create: (context) => FeaturedProduct(),
         ),
+        ChangeNotifierProvider<SplashScreenProvider>(
+          create: (context) => SplashScreenProvider(),
+        ),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
@@ -89,23 +90,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: //Root()
-            StreamBuilder<FirebaseUser>(
-          stream: FirebaseAuth.instance.onAuthStateChanged,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.active) {
-              FirebaseUser user = snapshot.data;
-              if (user != null) {
-                Provider.of<UserData>(context)
-                    .setUserId(user.uid, user.phoneNumber);
-                return Root();
-              }
-              return Login();
-            } else {
-              return SplashScreen();
-            }
-          },
-        ),
+        home: Splash(),
       ),
     );
   }

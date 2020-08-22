@@ -147,7 +147,7 @@ class _LoginState extends State<Login> {
                   ),
                   elevation: 5,
                   color: primaryColor,
-                  child: !_loading
+                  child: _loading
                       ? Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: CircularProgressIndicator(
