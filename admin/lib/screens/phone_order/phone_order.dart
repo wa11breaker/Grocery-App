@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:admin/provider/phone_order_logic/cart.dart';
 import 'package:admin/provider/phone_order_logic/get_items.dart';
 import 'package:admin/provider/phone_order_logic/place_order.dart';
@@ -19,7 +18,7 @@ class PhoneOrderEntry extends StatefulWidget {
 
 class _PhoneOrderEntryState extends State<PhoneOrderEntry> {
   final _formKey = GlobalKey<FormState>();
-  String name, number, buildingName, landmark, city, state, pincode;
+  String name, number, address;
 
   String deliveryTime;
   String deliveryDate;
@@ -55,8 +54,6 @@ class _PhoneOrderEntryState extends State<PhoneOrderEntry> {
   }
 
   placeOrder(String paymentId) {
-    String address = '$buildingName, $landmark, $city, $state, $pincode';
-
     if (deliveryDate != null) {
       Provider.of<PlaceOrder>(context, listen: false)
           .placeCodOrder(
@@ -64,7 +61,7 @@ class _PhoneOrderEntryState extends State<PhoneOrderEntry> {
             phoneNumber: number.trim(),
             context: context,
             address: address.trim(),
-            cod: false,
+            cod: true,
             paymentId: paymentId,
             deliveryTime: deliveryTime,
             deliveryDate: deliveryDate,
@@ -100,7 +97,6 @@ class _PhoneOrderEntryState extends State<PhoneOrderEntry> {
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset('assets/success.png'),
                   SizedBox(
                     height: 32,
                   ),
@@ -146,8 +142,7 @@ class _PhoneOrderEntryState extends State<PhoneOrderEntry> {
                     ),
                     onPressed: () {
                       Provider.of<Cart>(context, listen: false).clear();
-                      /*  Navigator.popUntil(context,
-                          ModalRoute.withName(Navigator.defaultRouteName)); */
+                      Navigator.of(context).pop();
                     },
                   ),
                 ],
@@ -161,219 +156,232 @@ class _PhoneOrderEntryState extends State<PhoneOrderEntry> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        // height: MediaQuery.of(context).size.height,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                MyTextFormField(
-                  hintText: 'Name',
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return 'Enter your name';
-                    }
-                    return null;
-                  },
-                  onSaved: (String value) {
-                    name = value;
-                  },
-                ),
-                MyTextFormField(
-                  isNubmer: true,
-                  hintText: '10-digit mobile number*',
-                  validator: (String value) {
-                    if (value.length != 10) {
-                      return 'Please enter a valid mobile number';
-                    }
-                    return null;
-                  },
-                  onSaved: (String value) {
-                    number = value;
-                  },
-                ),
-                MyTextFormField(
-                  hintText: 'Full Address',
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return 'Address cannot be empty';
-                    }
-                    return null;
-                  },
-                  onSaved: (String value) {
-                    buildingName = value;
-                  },
-                ),
-                Container(
-                  color: Colors.grey[50],
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  margin: const EdgeInsets.only(bottom: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      if (deliveryTime != null && deliveryDate != null)
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              deliveryTime,
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            SizedBox(height: 8),
-                            Text(
-                              deliveryDate,
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ],
-                        ),
-                      FlatButton(
-                        onPressed: () => _selectTimeSlot(),
-                        child: Text(
-                          'Select time slot',
-                          style: TextStyle(
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ),
-                    ],
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          // height: MediaQuery.of(context).size.height,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Offline Orders',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Consumer<FilterProvider>(
-                      builder: (context, value, _) => SizedBox(
-                          height: 300,
-                          width: 500,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                Text(
-                                  'All Products',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: primaryColor,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                value.filterResult == null ||
-                                        value.filterResult.length == 0
-                                    ? Center(child: CircularProgressIndicator())
-                                    : Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: SingleChildScrollView(
-                                          child: Scrollbar(
-                                            child: GridView.builder(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      0, 32, 16, 0),
-                                              physics: ClampingScrollPhysics(),
-                                              shrinkWrap: true,
-                                              itemCount:
-                                                  value.filterResult.length,
-                                              gridDelegate:
-                                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 3,
-                                                crossAxisSpacing: 16,
-                                                mainAxisSpacing: 24,
-                                                childAspectRatio: 1,
-                                              ),
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                return GridItem(
-                                                  item:
-                                                      value.filterResult[index],
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                              ],
-                            ),
-                          )),
-                      // ),
-                    ),
-                    Consumer<Cart>(
-                      builder: (context, value, _) => SizedBox(
-                        height: 300,
-                        width: 300,
-                        child: SingleChildScrollView(
-                          child: Column(
+                  SizedBox(
+                    height: 32,
+                  ),
+                  MyTextFormField(
+                    hintText: 'Name',
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return 'Enter your name';
+                      }
+                      return null;
+                    },
+                    onSaved: (String value) {
+                      name = value;
+                    },
+                  ),
+                  MyTextFormField(
+                    isNubmer: true,
+                    hintText: '10-digit mobile number*',
+                    validator: (String value) {
+                      if (value.length != 10) {
+                        return 'Please enter a valid mobile number';
+                      }
+                      return null;
+                    },
+                    onSaved: (String value) {
+                      number = value;
+                    },
+                  ),
+                  MyTextFormField(
+                    hintText: 'Full Address',
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return 'Address cannot be empty';
+                      }
+                      return null;
+                    },
+                    onSaved: (String value) {
+                      address = value;
+                    },
+                  ),
+                  Container(
+                    color: lightGrey,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    margin: const EdgeInsets.only(bottom: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (deliveryTime != null && deliveryDate != null)
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Cart',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: primaryColor,
-                                  fontSize: 16,
-                                ),
+                                deliveryTime,
+                                style: TextStyle(color: Colors.black),
                               ),
-                              SizedBox(
-                                height: 24,
-                              ),
-                              ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: ClampingScrollPhysics(),
-                                  itemCount: value.cartItemList.length,
-                                  itemBuilder: (context, index) => Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: CartItemTile(
-                                          index: index,
-                                        ),
-                                      )
-                                  // cartTile(value, index),
-                                  ),
-                              Row(
-                                children: [
-                                  Text('Total Price :  '),
-                                  Text(
-                                    '₹ ' + value.subTotal.toString(),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: primaryColor,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ],
+                              SizedBox(height: 8),
+                              Text(
+                                deliveryDate,
+                                style: TextStyle(color: Colors.black),
                               ),
                             ],
                           ),
+                        FlatButton(
+                          onPressed: () => _selectTimeSlot(),
+                          child: Text(
+                            'Select time slot',
+                            style: TextStyle(
+                              color: Colors.blue,
+                            ),
+                          ),
                         ),
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: RaisedButton(
-                    onPressed: () {
-                      FocusScope.of(context).unfocus();
-                      if (_formKey.currentState.validate()) {
-                        _formKey.currentState.save();
-
-                        placeOrder('');
-                      }
-                    },
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    elevation: 5,
-                    color: primaryColor,
-                    child: Text(
-                      'SAVE',
-                      style: TextStyle(color: Colors.white),
+                      ],
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 16,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 200,
+                    height: 350,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Consumer<FilterProvider>(
+                          builder: (context, value, _) => Expanded(
+                            child: Scrollbar(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'All Products',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: primaryColor,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 24,
+                                    ),
+                                    value.filterResult == null ||
+                                            value.filterResult.length == 0
+                                        ? Center(
+                                            child: CircularProgressIndicator())
+                                        : Wrap(
+                                            spacing: 16,
+                                            runSpacing: 16,
+                                            children: [
+                                              ...value.filterResult
+                                                  .map((e) => GridItem(item: e))
+                                                  .toList(),
+                                            ],
+                                          )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          // ),
+                        ),
+                        VerticalDivider(
+                          color: primaryColor,
+                          thickness: 1,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: Consumer<Cart>(
+                            builder: (context, value, _) => SizedBox(
+                              height: 300,
+                              width: 300,
+                              child: Scrollbar(
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Cart',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: primaryColor,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 24,
+                                      ),
+                                      ListView.builder(
+                                          shrinkWrap: true,
+                                          physics: ClampingScrollPhysics(),
+                                          itemCount: value.cartItemList.length,
+                                          itemBuilder: (context, index) =>
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: CartItemTile(
+                                                  index: index,
+                                                ),
+                                              )
+                                          // cartTile(value, index),
+                                          ),
+                                      Row(
+                                        children: [
+                                          Text('Total Price :  '),
+                                          Text(
+                                            '₹ ' + value.subTotal.toString(),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: primaryColor,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: RaisedButton(
+                      onPressed: () {
+                        FocusScope.of(context).unfocus();
+                        if (_formKey.currentState.validate()) {
+                          _formKey.currentState.save();
+
+                          placeOrder('');
+                        }
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      elevation: 5,
+                      color: primaryColor,
+                      child: Text(
+                        'Place Order',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -555,6 +563,7 @@ class MyTextFormField extends StatelessWidget {
           cursorColor: primaryColor,
           decoration: InputDecoration(
             hintText: hintText,
+            hintStyle: TextStyle(fontSize: 14),
             contentPadding: EdgeInsets.all(15.0),
             border: InputBorder.none,
             filled: true,

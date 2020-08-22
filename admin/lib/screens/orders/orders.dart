@@ -17,8 +17,8 @@ class Orders extends StatelessWidget {
       length: 4,
       child: Scaffold(
         appBar: TabBar(
-          isScrollable: false,
           labelColor: primaryColor,
+          physics: NeverScrollableScrollPhysics(),
           tabs: [
             Tab(text: 'New Orders'),
             Tab(text: 'Accepted Orders'),
@@ -27,6 +27,7 @@ class Orders extends StatelessWidget {
           ],
         ),
         body: TabBarView(
+          physics: NeverScrollableScrollPhysics(),
           children: [
             NewOrders(),
             Accepted(),

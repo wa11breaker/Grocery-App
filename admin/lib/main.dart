@@ -14,6 +14,7 @@ import 'provider/category_provider.dart';
 import 'provider/item_provider.dart';
 import 'provider/phone_order_logic/cart.dart';
 import 'provider/phone_order_logic/get_items.dart';
+import 'provider/phone_order_logic/place_order.dart';
 import 'provider/screen_index.dart';
 
 void main() {
@@ -38,10 +39,15 @@ class MyApp extends StatelessWidget {
   MaterialColor accentColor = MaterialColor(0xFF337C36, color);
 
   @override
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // ignore: override_on_non_overriding_member
+  // ignore: unused_field
   Widget build(BuildContext context) {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider<PlaceOrder>(
+          create: (context) => PlaceOrder(),
+        ),
         ChangeNotifierProvider<FilterProvider>(
           create: (context) => FilterProvider(),
         ),
@@ -80,8 +86,7 @@ class MyApp extends StatelessWidget {
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
           debugShowCheckedModeBanner: false,
-          home:
-              /* StreamBuilder(
+          home: StreamBuilder(
             stream: _auth.onAuthStateChanged,
             builder: (BuildContext context, snapshot) {
               if (snapshot.hasData && (!snapshot.data.isAnonymous)) {
@@ -96,9 +101,9 @@ class MyApp extends StatelessWidget {
 
               return Login();
             },
-          ) */
+          )
 
-              Home()
+          // Home()
 
           //     Consumer<SingnIn>(
           //   builder: (context, value, child) =>

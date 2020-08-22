@@ -2,6 +2,8 @@ import 'package:admin/models/deliveryboy_model.dart';
 import 'package:admin/utilities/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
+import 'package:admin/provider/delivery_boy.dart';
 
 class DeliveryTile extends StatelessWidget {
   final DeliveryBoyModle db;
@@ -9,6 +11,7 @@ class DeliveryTile extends StatelessWidget {
   const DeliveryTile({Key key, this.db}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    String dbPassword;
     Future<void> _showMyDialog() async {
       return showDialog<void>(
         context: context,
@@ -34,11 +37,13 @@ class DeliveryTile extends StatelessWidget {
                     ),
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'New Category name',
+                      hintText: 'Delivery boy password',
                       hintStyle: TextStyle(fontSize: 12),
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 16),
                     ),
+                    onChanged: (value) => dbPassword = value,
+                    onSubmitted: (value) => dbPassword = value,
                   ),
                 ),
               ],
@@ -51,9 +56,15 @@ class DeliveryTile extends StatelessWidget {
                 },
               ),
               FlatButton(
-                child: Text('Update'),
+                child: Text('Delete'),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Provider.of<DeliveryBoyProvider>(context, listen: false)
+                      .deleteDeliveryBoy(
+                    email: db.email,
+                    password: dbPassword,
+                    uid: db.id,
+                    context: context,
+                  );
                 },
               ),
             ],
@@ -118,12 +129,12 @@ class DeliveryTile extends StatelessWidget {
               SizedBox(
                 width: 12,
               ),
-              /* IconButton(
-                icon: Icon(Icons.edit),
+              IconButton(
+                icon: Icon(Icons.delete),
                 color: Colors.grey,
                 tooltip: 'Edit Category',
-                onPressed: _showMyDialog,
-              ) */
+                onPressed: () => _showMyDialog(),
+              ),
             ],
           ),
         ),

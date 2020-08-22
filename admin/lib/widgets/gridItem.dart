@@ -15,6 +15,8 @@ class GridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 180,
+      height: 120,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
@@ -29,9 +31,9 @@ class GridItem extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Text(item.title, style: Theme.of(context).textTheme.bodyText2),
+            Text(item.title, style: TextStyle(fontSize: 12)),
             SizedBox(
               height: 4,
             ),
@@ -41,14 +43,14 @@ class GridItem extends StatelessWidget {
                   '₹' + item.price.toString(),
                   style: Theme.of(context).textTheme.headline5.copyWith(
                         color: primaryColor,
-                        fontSize: 14,
+                        fontSize: 12,
                       ),
                 ),
                 Text(
                   ' / ' + item.unit,
                   style: Theme.of(context).textTheme.headline5.copyWith(
                         // color: primaryColor,
-                        fontSize: 14,
+                        fontSize: 12,
                       ),
                 ),
               ],
@@ -70,7 +72,7 @@ class GridItem extends StatelessWidget {
                       'ADD',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 14,
+                        fontSize: 12,
                       ),
                     ),
                   ),

@@ -44,7 +44,7 @@ class _NavItemsState extends State<NavItems> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: 30,
+                  height: 28,
                 ),
                 Row(
                   children: [
@@ -71,7 +71,7 @@ class _NavItemsState extends State<NavItems> {
                   ],
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 28,
                 ),
                 Divider(
                   height: 0,

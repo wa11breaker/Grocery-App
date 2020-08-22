@@ -17,12 +17,12 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   // List<User> users;
   List<Widget> screen = [
-    PhoneOrderEntry(),
-    // Dashboard(),
+    Dashboard(),
     Orders(),
     SlelctCategoryItems(),
     Banners(),
     DeleveryBoy(),
+    PhoneOrderEntry(),
   ];
   bool sort;
 

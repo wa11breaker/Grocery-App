@@ -36,7 +36,9 @@ class PlaceOrder extends ChangeNotifier {
       name: name,
       deliveryTime: deliveryTime,
       deliveryDay: deliveryDate,
+      paymentId: '',
     );
+    // print(order);
 
     await Firestore.instance
         .collection('orders')

@@ -29,6 +29,10 @@ class SideBar extends StatelessWidget {
       {
         'icon': Icons.directions_bike,
         'title': 'DELIVERY BOYS',
+      },
+      {
+        'icon': Icons.phone,
+        'title': 'OFFLINE ORDERS',
       }
     ];
 
@@ -40,14 +44,14 @@ class SideBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
+            padding: const EdgeInsets.all(8.0),
             child: Container(
               width: 200,
-              height: 150,
+              height: 100,
               decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-              ),
+                  color: Colors.white,
+                  // shape: BoxShape.circle,
+                  borderRadius: BorderRadiusDirectional.circular(4)),
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: Image.asset(

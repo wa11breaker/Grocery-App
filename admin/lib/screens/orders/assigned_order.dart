@@ -19,6 +19,8 @@ class Assigned extends StatelessWidget {
             if (snapshot.data == null || snapshot.data.documents.length == 0) {
               return Center(child: Text('No New Assigned Orders'));
             } else {
+              // return Center(child: Text('No New Assigned Orders'));
+
               return buildDataTable(snapshot.data.documents, context);
             }
           } else {
@@ -61,6 +63,10 @@ class Assigned extends StatelessWidget {
             numeric: false,
           ),
           DataColumn(
+            label: Text("Date Slot"),
+            numeric: false,
+          ),
+          DataColumn(
             label: Text("D-Boy"),
             numeric: false,
           ),
@@ -90,12 +96,17 @@ class Assigned extends StatelessWidget {
                     ),
                   ),
                   DataCell(
+                    Text(e['deliveryDay'] ?? ''),
+                  ),
+                  DataCell(
                     Text(
-                      Provider.of<DeliveryBoyProvider>(context, listen: false)
-                          .deliveryBoy
-                          .firstWhere((element) => element.id == e['dbID'])
-                          .name,
-                    ),
+                        Provider.of<DeliveryBoyProvider>(context, listen: false)
+                            .deliveryBoy
+                            .firstWhere(
+                              (element) => element.id == e['dbID'],
+                              orElse: () => DeliveryBoyModle(name: ''),
+                            )
+                            .name),
                   ),
                 ],
               ),

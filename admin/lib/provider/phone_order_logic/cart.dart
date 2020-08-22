@@ -82,6 +82,7 @@ class Cart extends ChangeNotifier {
 
   clear() {
     _cartItemList.clear();
+    _subTotal = 0.0;
     notifyListeners();
   }
 

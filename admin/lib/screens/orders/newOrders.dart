@@ -1,5 +1,4 @@
 import 'package:admin/services/send_message.dart';
-import 'package:admin/utilities/color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -7,63 +6,30 @@ import 'package:flutter/rendering.dart';
 class NewOrders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: StreamBuilder(
-          stream: Firestore.instance
-              .collection('orders')
-              .where('orderStatus', isEqualTo: 'ORDER-PLACES')
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.active) {
-              if (snapshot.data == null ||
-                  snapshot.data.documents.length == 0) {
-                return Center(child: Text('No New Orders'));
-              } else {
-                return buildDataTable(snapshot.data.documents, context);
-              }
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: StreamBuilder(
+        stream: Firestore.instance
+            .collection('orders')
+            .where('orderStatus', isEqualTo: 'ORDER-PLACES')
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.data == null || snapshot.data.documents.length == 0) {
+              return Center(child: Text('No New Orders'));
             } else {
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CircularProgressIndicator(),
-                ),
-              );
+              return buildDataTable(snapshot.data.documents, context);
             }
-            // return buildDataTable();
-          },
-        ),
-      ),
-      floatingActionButton: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          onTap: () {},
-          child: Container(
-            decoration: BoxDecoration(
-              color: primaryColor,
-              borderRadius: BorderRadius.circular(4),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey[300],
-                  spreadRadius: 5,
-                  blurRadius: 10,
-                )
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text(
-                'Add Orders',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+          } else {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircularProgressIndicator(),
               ),
-            ),
-          ),
-        ),
+            );
+          }
+          // return buildDataTable();
+        },
       ),
     );
   }
@@ -96,6 +62,10 @@ class NewOrders extends StatelessWidget {
           ),
           DataColumn(
             label: Text("Time Slot"),
+            numeric: false,
+          ),
+          DataColumn(
+            label: Text("Date Slot"),
             numeric: false,
           ),
         ],
@@ -131,6 +101,9 @@ class NewOrders extends StatelessWidget {
                   ),
                   DataCell(
                     Text(data['deliveryTime']),
+                  ),
+                  DataCell(
+                    Text(data['deliveryDay'] ?? ''),
                   ),
                 ],
               ),
@@ -221,7 +194,7 @@ class NewOrders extends StatelessWidget {
                           .updateData({'orderStatus': 'ORDER-REJECTED'}).then(
                               (value) {
                         sendSMS(
-                          status: 'approved',
+                          status: 'rejected',
                           name: data['name'],
                           phone: data['phone'].toString().substring(2),
                           orderID: data['orderId'],

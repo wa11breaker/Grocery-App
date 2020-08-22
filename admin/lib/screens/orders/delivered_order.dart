@@ -101,7 +101,10 @@ class Delivered extends StatelessWidget {
                     Text(
                       Provider.of<DeliveryBoyProvider>(context, listen: false)
                           .deliveryBoy
-                          .firstWhere((element) => element.id == e['dbID'])
+                          .firstWhere(
+                            (element) => element.id == e['dbID'],
+                            orElse: () => DeliveryBoyModle(name: ''),
+                          )
                           .name,
                     ),
                   ),

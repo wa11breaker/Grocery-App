@@ -64,6 +64,10 @@ class Accepted extends StatelessWidget {
             label: Text("Time Slot"),
             numeric: false,
           ),
+          DataColumn(
+            label: Text("Date Slot"),
+            numeric: false,
+          ),
         ],
         rows: data
             .map(
@@ -92,6 +96,9 @@ class Accepted extends StatelessWidget {
                   DataCell(
                     Text(e['deliveryTime']),
                   ),
+                  DataCell(
+                    Text(e['deliveryDay'] ?? ''),
+                  ),
                 ],
               ),
             )
@@ -106,9 +113,10 @@ class Accepted extends StatelessWidget {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-            content: AssignOrderDilogeBox(
-          data: data,
-        ));
+          content: AssignOrderDilogeBox(
+            data: data,
+          ),
+        );
       },
     );
   }
@@ -132,6 +140,9 @@ class _AssignOrderDilogeBoxState extends State<AssignOrderDilogeBox> {
         Text(
           'Order Detailes',
           style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        SizedBox(
+          height: 16,
         ),
         Row(
           children: [
@@ -170,6 +181,9 @@ class _AssignOrderDilogeBoxState extends State<AssignOrderDilogeBox> {
               ),
             ),
           ],
+        ),
+        SizedBox(
+          height: 16,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
