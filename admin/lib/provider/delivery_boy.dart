@@ -9,8 +9,10 @@ class DeliveryBoyProvider extends ChangeNotifier {
 
   fetchDeliveryBoyLIst() async {
     if (_deliveryBoys.length == 0) {
-      var snapshot =
-          await Firestore.instance.collection('deliveryBoy').getDocuments();
+      var snapshot = await Firestore.instance
+          .collection('deliveryBoy')
+          .where('inservice', isEqualTo: true)
+          .getDocuments();
       snapshot.documents.forEach(
         (doc) => _deliveryBoys.add(DeliveryBoyModle.fromDoc(doc.data)),
       );
@@ -32,6 +34,7 @@ class DeliveryBoyProvider extends ChangeNotifier {
       'name': name,
       'email': email,
       'id': data.user.uid,
+      'inservice': true,
     }).then((value) {
       _deliveryBoys.add(
         DeliveryBoyModle(email: email, id: data.user.uid, name: name),
@@ -41,15 +44,17 @@ class DeliveryBoyProvider extends ChangeNotifier {
     });
   }
 
-  deleteDeliveryBoy({String email, password, uid, BuildContext context}) async {
-    // print(email + password + uid);
-    // FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    // AuthCredential credentials =
-    //     EmailAuthProvider.getCredential(email: email, password: password);
-    // AuthResult result = await user.reauthenticateWithCredential(credentials);
-    // await result.user.delete();
-    // await Firestore.instance.collection('deliveryBoy').document(uid).delete();
-    // _deliveryBoys.removeWhere((element) => element.id == uid);
-    // notifyListeners();
+  deleteDeliveryBoy({String uid}) async {
+    await Firestore.instance
+        .collection('deliveryBoy')
+        .document(uid)
+        .updateData({'inservice': false});
+    _deliveryBoys.removeWhere((element) => element.id == uid);
+    /* FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    AuthCredential credentials =
+        EmailAuthProvider.getCredential(email: email, password: password);
+    AuthResult result = await user.reauthenticateWithCredential(credentials);
+    await result.user.delete(); */
+    notifyListeners();
   }
 }
