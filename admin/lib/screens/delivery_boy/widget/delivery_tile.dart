@@ -11,46 +11,19 @@ class DeliveryTile extends StatelessWidget {
   const DeliveryTile({Key key, this.db}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    String dbPassword;
     Future<void> _showMyDialog() async {
       return showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 300,
-                  decoration: BoxDecoration(
-                    color: lightGrey,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: TextField(
-                    keyboardType: TextInputType.number,
-                    cursorColor: primaryColor,
-                    style: TextStyle(
-                      fontSize: 12,
-                      letterSpacing: 1,
-                      color: Colors.black,
-                    ),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Delivery boy password',
-                      hintStyle: TextStyle(fontSize: 12),
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 16),
-                    ),
-                    onChanged: (value) => dbPassword = value,
-                    onSubmitted: (value) => dbPassword = value,
-                  ),
-                ),
-              ],
-            ),
+            title: Text('Delete ${db.name}'),
             actions: <Widget>[
               FlatButton(
-                child: Text('Cancel'),
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(color: Colors.grey),
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -60,11 +33,9 @@ class DeliveryTile extends StatelessWidget {
                 onPressed: () {
                   Provider.of<DeliveryBoyProvider>(context, listen: false)
                       .deleteDeliveryBoy(
-                    email: db.email,
-                    password: dbPassword,
                     uid: db.id,
-                    context: context,
                   );
+                  Navigator.of(context).pop();
                 },
               ),
             ],
@@ -132,7 +103,7 @@ class DeliveryTile extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.delete),
                 color: Colors.grey,
-                tooltip: 'Edit Category',
+                tooltip: 'Delete',
                 onPressed: () => _showMyDialog(),
               ),
             ],

@@ -80,36 +80,34 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
-          title: 'Capital Supply Admin',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-          ),
-          debugShowCheckedModeBanner: false,
-          home: StreamBuilder(
-            stream: _auth.onAuthStateChanged,
-            builder: (BuildContext context, snapshot) {
-              if (snapshot.hasData && (!snapshot.data.isAnonymous)) {
-                return Home();
-              } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    valueColor: new AlwaysStoppedAnimation<Color>(primaryColor),
-                  ),
-                );
-              }
+        title: 'Capital Supply Admin',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        debugShowCheckedModeBanner: false,
+        home: StreamBuilder(
+          stream: _auth.onAuthStateChanged,
+          builder: (BuildContext context, snapshot) {
+            if (snapshot.hasData && (!snapshot.data.isAnonymous)) {
+              return Home();
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(primaryColor),
+                ),
+              );
+            }
 
-              return Login();
-            },
-          )
-
-          // Home()
-
-          //     Consumer<SingnIn>(
-          //   builder: (context, value, child) =>
-          //       value.signInSuccess ? Home() : Login(),
-          // ),
-          ),
+            return Login();
+          },
+        ),
+        // Home()
+        //     Consumer<SingnIn>(
+        //   builder: (context, value, child) =>
+        //       value.signInSuccess ? Home() : Login(),
+        // ),
+      ),
     );
   }
 }
