@@ -13,9 +13,25 @@ class UserData extends ChangeNotifier {
 
   AccountDetails _accountDetails;
   AccountDetails get accountDetailes => _accountDetails;
-
-  bool _profileNotFound = false;
-  bool get profileNotFound => _profileNotFound;
+/*   AccountDetails get accountDetailes => AccountDetails(
+        name: 'Akshay Asok',
+        phoneNumber: '7356220556',
+        addresses: [
+          Address(
+            buildingName: 'Sreehari',
+            city: 'Kollam',
+            landmark: 'Decent Jn',
+            name: 'Akshay',
+            phoneNumber: '7356220556',
+            isDefault: true,
+            pincode: '691577',
+            state: 'Kerala',
+          ),
+        ],
+      );
+ */
+  bool _profileFound = false;
+  bool get profileFound => _profileFound;
 
   setUserId(String userId, phone) async {
     _id = userId;
@@ -33,8 +49,7 @@ class UserData extends ChangeNotifier {
         _accountDetails = AccountDetails.fromDocument(
           await FAPI().getUserDetail(_id),
         );
-        _profileNotFound = false;
-        prefs.setBool('setUpCompleate', true);
+        _profileFound = true;
         notifyListeners();
       } else {
         bool exist = await FAPI().checkUserDetail(_id);
@@ -42,11 +57,11 @@ class UserData extends ChangeNotifier {
           _accountDetails = AccountDetails.fromDocument(
             await FAPI().getUserDetail(_id),
           );
-          _profileNotFound = false;
+          _profileFound = true;
           prefs.setBool('setUpCompleate', true);
           notifyListeners();
         } else {
-          _profileNotFound = true;
+          _profileFound = false;
           notifyListeners();
           // showAlert(context);
         }
@@ -69,12 +84,23 @@ class UserData extends ChangeNotifier {
 
   addNewAddress({Address newAddress, BuildContext context}) async {
     await FAPI().saveAddress(newAddress: newAddress, uid: _id).then((value) {
-      if (value) {
+      if (value == true) {
         _accountDetails.addresses.add(newAddress);
         notifyListeners();
         Navigator.of(context).pop();
       } else {
-        print('Failed');
+        print('adding new address failed');
+      }
+    });
+  }
+
+  deleteAddress({Address address}) async {
+    await FAPI().deleteAddress(newAddress: address, uid: _id).then((value) {
+      if (value == true) {
+        _accountDetails.addresses.remove(address);
+        notifyListeners();
+      } else {
+        print('deleting address failed');
       }
     });
   }

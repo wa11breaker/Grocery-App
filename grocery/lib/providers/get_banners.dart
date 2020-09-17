@@ -5,18 +5,15 @@ class GetBanners extends ChangeNotifier {
   List<String> _banners = List();
   List<String> get banners => _banners;
 
-  bool _loadingoffers;
-  bool get loadingoffers => _loadingoffers;
-
-  void loading(bool status) {
-    _loadingoffers = status;
-    notifyListeners();
-  }
+  // set loading to true by default
+  bool _loading = true;
+  bool get loading => _loading;
 
   Future<void> getBanners() async {
     if (_banners.length == 0) {
       _banners = await FAPI().banners();
-      loading(false);
+      _loading = false;
+      notifyListeners();
     }
   }
 }

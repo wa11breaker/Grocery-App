@@ -25,94 +25,113 @@ class LoginScreen extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     return Consumer<LoginWithPhone>(
       builder: (context, value, child) => Scaffold(
-        body: SizedBox(
-          height: height,
-          child: Padding(
-            padding: const EdgeInsets.all(28.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                SizedBox(
-                  height: 100,
-                  child: Image.asset('assets/logo.jpg'),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text('Enter Mobile Number'),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                          color: lightGrey,
-                          borderRadius: BorderRadius.circular(4)),
-                      child: TextField(
-                        // controller: _phoneNumber,
-                        keyboardType: TextInputType.number,
-                        cursorColor: primaryColor,
+        body: SingleChildScrollView(
+          child: SizedBox(
+            height: height,
+            child: Padding(
+              padding: const EdgeInsets.all(28.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Column(
+                    children: [
+                      Image.asset('assets/icon/icon.png'),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Text(
+                        'Grocery App Demo',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
+                          fontSize: 25,
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          letterSpacing: 1,
-                          color: Colors.black,
                         ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.only(right: 20, left: 16),
-                            child: Text(
-                              '+91-',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Colors.black,
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'Enter Mobile Number',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: TextField(
+                          // controller: _phoneNumber,
+                          keyboardType: TextInputType.number,
+                          cursorColor: primaryColor,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            letterSpacing: 1,
+                            color: Colors.black,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            prefixIcon: Padding(
+                              padding:
+                                  const EdgeInsets.only(right: 20, left: 16),
+                              child: Text(
+                                '+91-',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
-                          ),
-                          prefixIconConstraints: BoxConstraints(
-                            minWidth: 23,
-                            maxHeight: 20,
-                          ),
+                            prefixIconConstraints: BoxConstraints(
+                              minWidth: 23,
+                              maxHeight: 20,
+                            ),
 
-                          // contentPadding: EdgeInsets.only(top: 20),
+                            // contentPadding: EdgeInsets.only(top: 20),
+                          ),
+                          onChanged: (numb) => value.onTextChange(numb),
+                          onSubmitted: (numb) => value.validate(),
                         ),
-                        onChanged: (numb) => value.onTextChange(numb),
-                        onSubmitted: (numb) => value.validate(),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        value.errorMessage,
+                        style: TextStyle(color: Colors.red, fontSize: 14),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: RaisedButton(
+                      onPressed: () {
+                        FocusScope.of(context).unfocus();
+                        if (value.validate()) {
+                          value.verifyPhone();
+                        }
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      elevation: 5,
+                      color: primaryColor,
+                      child: Text(
+                        'NEXT',
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      value.errorMessage,
-                      style: TextStyle(color: Colors.red, fontSize: 14),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: RaisedButton(
-                    onPressed: () {
-                      FocusScope.of(context).unfocus();
-                      if (value.validate()) {
-                        value.verifyPhone();
-                      }
-                    },
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    elevation: 5,
-                    color: primaryColor,
-                    child: Text(
-                      'NEXT',
-                      style: TextStyle(color: Colors.white),
-                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

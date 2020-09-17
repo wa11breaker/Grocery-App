@@ -5,6 +5,7 @@ import 'package:grocery/models/account_details.dart';
 import 'package:grocery/models/order.dart';
 import 'package:grocery/providers/cart.dart';
 import 'package:grocery/providers/user_data.dart';
+import 'package:grocery/services/firebase_api.dart';
 import 'package:provider/provider.dart';
 
 class PlaceOrder extends ChangeNotifier {
@@ -16,8 +17,6 @@ class PlaceOrder extends ChangeNotifier {
     Address address,
     bool cod,
     String paymentId,
-    String deliveryTime,
-    String deliveryDate,
   }) async {
     bool status = false;
     genetateOrderId();
@@ -33,20 +32,11 @@ class PlaceOrder extends ChangeNotifier {
       userId: Provider.of<UserData>(context, listen: false).uid,
       phone: Provider.of<UserData>(context, listen: false).phoneNumber,
       name: Provider.of<UserData>(context, listen: false).accountDetailes.name,
-      deliveryTime: deliveryTime,
-      deliveryDay: deliveryDate,
     );
+    await FAPI().placeOrder(order: order).then(
+          (value) => status = value,
+        );
 
-    await Firestore.instance
-        .collection('orders')
-        .add(order.toJson())
-        .then((value) {
-      if (value != null) {
-        status = true;
-      } else {
-        status = false;
-      }
-    });
     return status;
   }
 

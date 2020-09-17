@@ -37,6 +37,7 @@ class Address {
   String city;
   String state;
   String phoneNumber;
+  String type;
   bool isDefault;
 
   Address(
@@ -47,6 +48,7 @@ class Address {
       this.city,
       this.state,
       this.phoneNumber,
+      this.type,
       this.isDefault = false});
 
   Address.fromDocument(json) {
@@ -57,7 +59,8 @@ class Address {
     city = json['city'];
     state = json['state'];
     phoneNumber = json['phone_number'];
-    isDefault = json['is_default'] ?? false;
+    type = json['type'];
+    isDefault = json['isdefault'] ?? false;
   }
 
   Map<String, dynamic> toJson() {
@@ -69,7 +72,8 @@ class Address {
     data['city'] = this.city;
     data['state'] = this.state;
     data['phone_number'] = this.phoneNumber;
-    data['is_default'] = this.isDefault;
+    data['type'] = this.type;
+    data['isdefault'] = this.isDefault;
     return data;
   }
 

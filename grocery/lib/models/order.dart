@@ -13,8 +13,6 @@ class OrderModel {
   final String userId;
   final String phone;
   final String name;
-  final String deliveryTime;
-  final String deliveryDay;
 
   OrderModel({
     this.orderedAt,
@@ -22,14 +20,12 @@ class OrderModel {
     this.totalPrice,
     this.orderItems,
     this.orderStatus,
-    this.deliveryTime,
     this.cod,
     this.paymentId,
     this.orderAddress,
     this.userId,
     this.phone,
     this.name,
-    this.deliveryDay,
   });
   Map<String, dynamic> toJson() => {
         'orderedAt': orderedAt,
@@ -40,10 +36,8 @@ class OrderModel {
         'cod': cod,
         'paymentId': paymentId,
         'orderAddress': orderAddress,
-        'deliveryTime': deliveryTime,
         'userId': userId,
         'phone': phone,
         'name': name,
-        'deliveryDay': deliveryDay,
       };
 }

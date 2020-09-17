@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:grocery/models/cart_item.dart';
-import 'package:grocery/models/item.dart';
+import 'package:grocery/models/product.dart';
 
 class Cart extends ChangeNotifier {
   List<CartItem> _cartItemList = List();
@@ -9,7 +9,7 @@ class Cart extends ChangeNotifier {
   double _subTotal = 0;
   double get subTotal => _subTotal;
 
-  addToCart(ItemModle item) {
+  addToCart(Product item) {
     CartItem cartItem = CartItem(
         id: item.id,
         price: item.price,

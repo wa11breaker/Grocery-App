@@ -1,19 +1,21 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grocery/models/account_details.dart';
 import 'package:grocery/models/category.dart';
-import 'package:grocery/models/item.dart';
+import 'package:grocery/models/order.dart';
+import 'package:grocery/models/product.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FAPI {
+  //
   Future<List<String>> banners() async {
     List<String> _banners = List();
     Map tempBanners;
     try {
-      await Firestore.instance
+      await FirebaseFirestore.instance
           .collection('store')
-          .document('banners')
+          .doc('banners')
           .get()
           .then(
-            (value) => tempBanners = value.data,
+            (value) => tempBanners = value.data(),
           );
       for (var i in tempBanners['bannerList']) {
         _banners.add(i);
@@ -24,16 +26,17 @@ class FAPI {
     return _banners;
   }
 
+  //
   Future<List<Categorys>> category() async {
     List<Categorys> _category = List<Categorys>();
 
-    await Firestore.instance
+    await FirebaseFirestore.instance
         .collection('store')
-        .document('category')
+        .doc('category')
         .get()
         .then(
       (doc) {
-        for (var i in doc.data['categoryList']) {
+        for (var i in doc.data()['category']) {
           _category.add(Categorys.fromMap(i));
         }
       },
@@ -42,17 +45,49 @@ class FAPI {
     return _category;
   }
 
-  Future<List<ItemModle>> filter({String categoryId}) async {
-    List<ItemModle> _category = List<ItemModle>();
+  //
+  Future<QuerySnapshot> filter({String categoryId}) async {
+    QuerySnapshot _category;
 
-    await Firestore.instance
-        .collection('items')
+    _category = await FirebaseFirestore.instance
+        .collection('product')
         .where('categoryId', isEqualTo: categoryId)
-        .getDocuments()
+        .limit(10)
+        .get();
+
+    return _category;
+  }
+
+  Future<QuerySnapshot> fetchMoreFilter(
+      {String categoryId, DocumentSnapshot lastDoc}) async {
+    QuerySnapshot _category;
+
+    try {
+      _category = await FirebaseFirestore.instance
+          .collection('product')
+          .where('categoryId', isEqualTo: categoryId)
+          .startAfterDocument(lastDoc)
+          .limit(10)
+          .get();
+    } catch (e) {
+      print(e);
+    }
+
+    return _category;
+  }
+
+  //
+  Future<List<Product>> featuredProduct() async {
+    List<Product> _category = List<Product>();
+
+    await FirebaseFirestore.instance
+        .collection('product')
+        .where('isFeatured', isEqualTo: true)
+        .get()
         .then(
       (doc) {
-        for (var i in doc.documents) {
-          _category.add(ItemModle.formDocument(i));
+        for (var i in doc.docs) {
+          _category.add(Product.formDocument(i));
         }
       },
     );
@@ -60,28 +95,13 @@ class FAPI {
     return _category;
   }
 
-  Future<List<ItemModle>> featuredProduct() async {
-    List<ItemModle> _category = List<ItemModle>();
-
-    await Firestore.instance
-        .collection('items')
-        .where('featured', isEqualTo: true)
-        .getDocuments()
-        .then(
-      (doc) {
-        for (var i in doc.documents) {
-          _category.add(ItemModle.formDocument(i));
-        }
-      },
-    );
-
-    return _category;
-  }
-
+  // return false if their is no use data
   Future<bool> checkUserDetail(String uid) async {
     try {
-      DocumentSnapshot documentSnapshot =
-          await Firestore.instance.collection("customers").document(uid).get();
+      DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+          .collection("customers")
+          .doc(uid)
+          .get();
       if (documentSnapshot.exists) {
         return true;
       } else {
@@ -93,23 +113,26 @@ class FAPI {
     }
   }
 
+  // fetch all user details
   Future getUserDetail(String uid) async {
     try {
-      DocumentSnapshot documentSnapshot =
-          await Firestore.instance.collection("customers").document(uid).get();
-      return documentSnapshot.data;
+      DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+          .collection("customers")
+          .doc(uid)
+          .get();
+      return documentSnapshot.data();
     } catch (e) {
       print(e);
     }
   }
 
+  // save user data to the corresponding user auth id doc
   Future<bool> saveUserDetail(
       {AccountDetails accountDetails, String uid}) async {
     try {
-      await Firestore.instance
-          .collection('customers')
-          .document(uid)
-          .setData(accountDetails.toJson(), merge: true);
+      await FirebaseFirestore.instance.collection('customers').doc(uid).set(
+            accountDetails.toJson(),
+          );
       return true;
     } catch (e) {
       print(e);
@@ -117,17 +140,37 @@ class FAPI {
     }
   }
 
+  // add new address to the user doc
+  // return true if adding new address is successfull
   Future<bool> saveAddress({Address newAddress, String uid}) async {
     try {
-      await Firestore.instance
-          .collection('customers')
-          .document(uid)
-          .updateData({
+      await FirebaseFirestore.instance.collection('customers').doc(uid).update({
         "addresses": FieldValue.arrayUnion([newAddress.toJson()])
       });
       return true;
     } catch (e) {
       print(e);
+      return false;
+    }
+  }
+
+  Future<bool> deleteAddress({Address newAddress, String uid}) async {
+    try {
+      await FirebaseFirestore.instance.collection('customers').doc(uid).update({
+        "addresses": FieldValue.arrayRemove([newAddress.toJson()])
+      });
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> placeOrder({OrderModel order}) async {
+    try {
+      await FirebaseFirestore.instance.collection('orders').add(order.toJson());
+      return true;
+    } catch (e) {
       return false;
     }
   }

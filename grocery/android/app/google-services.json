@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "559314550489",
-    "firebase_url": "https://capital-supply-6dee7.firebaseio.com",
-    "project_id": "capital-supply-6dee7",
-    "storage_bucket": "capital-supply-6dee7.appspot.com"
+    "project_number": "885871798666",
+    "firebase_url": "https://grocery-app-b6a66.firebaseio.com",
+    "project_id": "grocery-app-b6a66",
+    "storage_bucket": "grocery-app-b6a66.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:559314550489:android:dac1780c0df82953bd08c8",
+        "mobilesdk_app_id": "1:885871798666:android:044bae66b57557cc930073",
         "android_client_info": {
-          "package_name": "com.capitalsupply.grocery"
+          "package_name": "com.xnorstudion.groceryapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "559314550489-2jg6e8u75q71g08ra8k6fpac8qrrhhru.apps.googleusercontent.com",
+          "client_id": "885871798666-c6e7avq3r1ihalp3fu3pflralhoqbk09.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.capitalsupply.grocery",
+            "package_name": "com.xnorstudion.groceryapp",
             "certificate_hash": "9b30faf0fe1843aa7d762b2b59960d003de46b6a"
           }
         },
         {
-          "client_id": "559314550489-pe5bpm7a4m7ouf1ubag7l9rfnv73n3vj.apps.googleusercontent.com",
+          "client_id": "885871798666-1mvqvsh3eq6q54d3rvqmatnmtts48n54.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCRf17zIXHHewbWnmE4H2wv_w7Om11Ich0"
+          "current_key": "AIzaSyD8CX7SOnq0WyMxQo037BN5Dea4n85-tNA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "559314550489-pe5bpm7a4m7ouf1ubag7l9rfnv73n3vj.apps.googleusercontent.com",
+              "client_id": "885871798666-1mvqvsh3eq6q54d3rvqmatnmtts48n54.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:grocery/providers/user_data.dart';
 import 'package:grocery/services/shared_prefs.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginWithPhone extends ChangeNotifier {
   String _phoneNumber;
@@ -51,7 +52,7 @@ class LoginWithPhone extends ChangeNotifier {
     };
 
     final PhoneVerificationFailed verificationfailed =
-        (AuthException authException) {
+        (FirebaseAuthException authException) {
       _otpError = 'Invalid OTP';
       notifyListeners();
       print('${authException.message}');
@@ -78,7 +79,7 @@ class LoginWithPhone extends ChangeNotifier {
   }
 
   signInWithOTP(BuildContext context) async {
-    AuthCredential authCreds = PhoneAuthProvider.getCredential(
+    AuthCredential authCreds = PhoneAuthProvider.credential(
       verificationId: _verificationId,
       smsCode: _otp,
     );
@@ -96,9 +97,9 @@ class LoginWithPhone extends ChangeNotifier {
     });
   }
 
-  signOut(BuildContext context) {
+  signOut(BuildContext context) async {
     FirebaseAuth.instance.signOut();
-    //  Navigator.pushReplacement(
-    //           context, MaterialPageRoute(builder: (context) => MyApp()));
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('setUpCompleate', false);
   }
 }

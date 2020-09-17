@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grocery/providers/cart.dart';
-import 'package:grocery/screens/cart/checkout.dart';
+import 'package:grocery/screens/checkout/checkout.dart';
 import 'package:grocery/utilities/color.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +21,6 @@ class CartScreen extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: lightGrey,
       body: Consumer<Cart>(
         builder: (context, value, _) => SafeArea(
           child: value.cartItemList.length == 0 || value.cartItemList == null
@@ -48,18 +47,13 @@ class CartScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // SizedBox(
-                          //   height: 16,
-                          // ),
                           ListView.builder(
-                              shrinkWrap: true,
-                              physics: ClampingScrollPhysics(),
-                              itemCount: value.cartItemList.length,
-                              itemBuilder: (context, index) => CartItemTile(
-                                    index: index,
-                                  )
-                              // cartTile(value, index),
-                              ),
+                            shrinkWrap: true,
+                            physics: ClampingScrollPhysics(),
+                            itemCount: value.cartItemList.length,
+                            itemBuilder: (context, index) =>
+                                CartItemTile(index: index),
+                          ),
                           SizedBox(
                             height: 70,
                           ),
@@ -88,7 +82,7 @@ class CartScreen extends StatelessWidget {
                                 onPressed: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => UpiPayment(),
+                                    builder: (context) => CheckOut(),
                                   ),
                                 ),
                                 shape: RoundedRectangleBorder(
@@ -106,7 +100,7 @@ class CartScreen extends StatelessWidget {
                                 ),
                               ),
                               Spacer(),
-                              Text('Total Price :  '),
+                              Text('Subtotal :  '),
                               Text(
                                 '₹ ' + value.subTotal.toString(),
                                 style: TextStyle(

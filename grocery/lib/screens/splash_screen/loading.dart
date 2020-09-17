@@ -5,10 +5,8 @@ class LoadingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Image.asset(
-          'assets/logo.jpg',
-          scale: 7,
-        ),
+        child: SizedBox(
+            height: 70, width: 70, child: Image.asset('assets/icon/icon.png')),
       ),
     );
   }

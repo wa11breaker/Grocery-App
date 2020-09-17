@@ -6,18 +6,18 @@ class GetCategory extends ChangeNotifier {
   List<Categorys> _category = List();
   List<Categorys> get category => _category;
 
-  bool _loadingCategory = true;
-  bool get loadingCategory => _loadingCategory;
+  bool _loading = true;
+  bool get loading => _loading;
 
-  void loading(bool status) {
-    _loadingCategory = status;
+  void loadingStatus(bool status) {
+    _loading = status;
     notifyListeners();
   }
 
   getCategory() async {
     if (_category.length == 0) {
       _category = await FAPI().category();
-      loading(false);
+      loadingStatus(false);
     }
   }
 }

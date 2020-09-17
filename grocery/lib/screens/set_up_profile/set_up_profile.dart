@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grocery/models/account_details.dart';
 import 'package:grocery/providers/user_data.dart';
+import 'package:grocery/screens/add_new_address/address_screen.dart';
 import 'package:grocery/utilities/color.dart';
 import 'package:provider/provider.dart';
 
@@ -12,30 +13,8 @@ class SetUpProfile extends StatefulWidget {
 class _SetUpProfileState extends State<SetUpProfile> {
   final _formKey = GlobalKey<FormState>();
   String name, phoneNumber, buildingName, landmark, city, state, pincode;
-  List<String> pincodes = [
-    '695005',
-    '695008',
-    '695040',
-    '695002',
-    '695003',
-    '695009',
-    '695013',
-    '695004',
-    '695012',
-    '695038',
-    '695033',
-    '695027',
-    '695016',
-    '695023',
-    '695011',
-    '695024',
-    '695034',
-    '695001',
-    '695014',
-    '695010',
-    '695035',
-    '695013'
-  ];
+  AddressType _addressType = AddressType.home;
+  List<String> pincodes = ['691577'];
 
   AccountDetails accountDetails = AccountDetails();
   @override
@@ -123,28 +102,41 @@ class _SetUpProfileState extends State<SetUpProfile> {
                     onSaved: (String value) {
                       landmark = value;
                     }),
-                MyTextFormField(
-                    hintText: 'City*',
-                    validator: (String value) {
-                      if (value.isEmpty) {
-                        return 'cannot be empty';
-                      }
-                      return null;
-                    },
-                    onSaved: (String value) {
-                      city = value;
-                    }),
-                MyTextFormField(
-                    hintText: 'State*',
-                    validator: (String value) {
-                      if (value.isEmpty) {
-                        return 'cannot be empty';
-                      }
-                      return null;
-                    },
-                    onSaved: (String value) {
-                      state = value;
-                    }),
+                Row(
+                  children: [
+                    Flexible(
+                      flex: 3,
+                      child: MyTextFormField(
+                          hintText: 'City*',
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return 'cannot be empty';
+                            }
+                            return null;
+                          },
+                          onSaved: (String value) {
+                            city = value;
+                          }),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Flexible(
+                      flex: 2,
+                      child: MyTextFormField(
+                          hintText: 'State*',
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return 'cannot be empty';
+                            }
+                            return null;
+                          },
+                          onSaved: (String value) {
+                            state = value;
+                          }),
+                    )
+                  ],
+                ),
                 MyTextFormField(
                     isNubmer: true,
                     hintText: 'Pin code*',
@@ -159,6 +151,59 @@ class _SetUpProfileState extends State<SetUpProfile> {
                     onSaved: (String value) {
                       pincode = value;
                     }),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Text(
+                    'Address Type',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                RadioListTile<AddressType>(
+                  activeColor: primaryColor,
+                  title: const Text(
+                    'Home Address',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  value: AddressType.home,
+                  groupValue: _addressType,
+                  onChanged: (AddressType value) {
+                    setState(() {
+                      _addressType = value;
+                    });
+                  },
+                ),
+                RadioListTile<AddressType>(
+                  activeColor: primaryColor,
+                  title: const Text(
+                    'Work/Office Address',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  value: AddressType.work,
+                  groupValue: _addressType,
+                  onChanged: (AddressType value) {
+                    setState(() {
+                      _addressType = value;
+                    });
+                  },
+                ),
+                RadioListTile<AddressType>(
+                  activeColor: primaryColor,
+                  title: const Text(
+                    'Other',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  value: AddressType.other,
+                  groupValue: _addressType,
+                  onChanged: (AddressType value) {
+                    setState(() {
+                      _addressType = value;
+                    });
+                  },
+                ),
                 SizedBox(
                   width: double.infinity,
                   height: 50,
@@ -180,6 +225,7 @@ class _SetUpProfileState extends State<SetUpProfile> {
                             state: state,
                             pincode: pincode,
                             isDefault: true,
+                            type: _addressType.toString(),
                           )
                         ];
                         print(accountDetails);
@@ -208,7 +254,7 @@ class _SetUpProfileState extends State<SetUpProfile> {
   }
 }
 
-class MyTextFormField extends StatelessWidget {
+/* class MyTextFormField extends StatelessWidget {
   final String hintText;
   final Function validator;
   final Function onSaved;
@@ -248,39 +294,40 @@ class MyTextFormField extends StatelessWidget {
       ),
     );
   }
-}
+} */
+class MyTextFormField extends StatelessWidget {
+  final String hintText;
+  final Function validator;
+  final Function onSaved;
+  final bool isNubmer;
 
-/* List<String> pincodes = [
-  '695005',
-  '695008',
-  '695014',
-  '695562',
-  '695004',
-  '695014',
-  '695040',
-  '695024',
-  '695002',
-  '695003',
-  '695003',
-  '695009',
-  '695013',
-  '695004',
-  '695033',
-  '695012',
-  '695038',
-  '695033',
-  '695010',
-  '695027',
-  '695001',
-  '695016',
-  '695023',
-  '695011',
-  '695024',
-  '695034',
-  '695001',
-  '695014',
-  '695010',
-  '695035',
-  '695013'
-];
- */
+  MyTextFormField({
+    this.hintText,
+    this.validator,
+    this.onSaved,
+    this.isNubmer,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 16),
+      child: TextFormField(
+        cursorColor: primaryColor,
+        decoration: InputDecoration(
+            // hintText: hintText,
+            contentPadding: EdgeInsets.only(bottom: 0),
+            labelText: hintText,
+            alignLabelWithHint: true,
+            labelStyle: TextStyle(fontSize: 14)
+            // border: InputBorder.none,
+            // filled: true,
+            // fillColor: Colors.grey[50],,
+            ),
+        validator: validator,
+        onSaved: onSaved,
+        keyboardType:
+            isNubmer == null ? TextInputType.text : TextInputType.number,
+      ),
+    );
+  }
+}

@@ -8,6 +8,7 @@ import 'package:grocery/screens/home/home.dart';
 import 'package:grocery/screens/profile/profile.dart';
 import 'package:grocery/screens/set_up_profile/set_up_profile.dart';
 import 'package:grocery/utilities/color.dart';
+import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:grocery/providers/user_data.dart';
 
@@ -23,7 +24,6 @@ class _RootState extends State<Root> {
     Provider.of<GetBanners>(context, listen: false).getBanners();
     Provider.of<GetCategory>(context, listen: false).getCategory();
     Provider.of<FeaturedProduct>(context, listen: false).getFeaturedProduct();
-    Provider.of<UserData>(context, listen: false).getUserDetailes(context);
   }
 
   static final List _bottomNavigationWidgets = [
@@ -40,7 +40,7 @@ class _RootState extends State<Root> {
         builder: (context, value, widget) => Stack(
           children: [
             _bottomNavigationWidgets[_navigationIndex],
-            value.profileNotFound
+            !value.profileFound
                 ? Container(
                     color: Colors.black45,
                     height: MediaQuery.of(context).size.height,
@@ -104,10 +104,16 @@ class _RootState extends State<Root> {
     return BottomNavigationBar(
       backgroundColor: Colors.white,
       elevation: 10,
+      selectedIconTheme: IconThemeData(color: primaryColor),
+      unselectedIconTheme: IconThemeData(color: Colors.grey),
+      unselectedLabelStyle: TextStyle(color: Colors.grey, fontSize: 10),
+      selectedLabelStyle: TextStyle(color: Colors.black, fontSize: 12),
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          title: Text('Home'),
+          icon: Icon(LineAwesomeIcons.home),
+          title: Text(
+            'Home',
+          ),
         ),
         BottomNavigationBarItem(
           icon: Stack(
@@ -115,7 +121,7 @@ class _RootState extends State<Root> {
               Align(
                 alignment: Alignment.center,
                 child: Icon(
-                  Icons.shopping_cart,
+                  LineAwesomeIcons.shopping_cart,
                 ),
               ),
               Consumer<Cart>(
@@ -127,7 +133,7 @@ class _RootState extends State<Root> {
                             height: 8,
                             width: 8,
                             decoration: BoxDecoration(
-                              color: Colors.red,
+                              color: Colors.redAccent[200],
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -135,11 +141,15 @@ class _RootState extends State<Root> {
                       : SizedBox.shrink())
             ],
           ),
-          title: Text('Cart'),
+          title: Text(
+            'Cart',
+          ),
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          title: Text('Profile'),
+          icon: Icon(LineAwesomeIcons.user),
+          title: Text(
+            'Profile',
+          ),
         ),
       ],
       currentIndex: _navigationIndex,

@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grocery/providers/cart.dart';
@@ -14,21 +16,26 @@ import 'screens/splash_screen/splash.dart';
 import 'utilities/appStrings.dart';
 import 'utilities/color.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
     runApp(MyApp());
   });
 }
 
-final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        // firebase auth Stream
+        StreamProvider<User>.value(
+          value: FirebaseAuth.instance.authStateChanges(),
+        ),
         ChangeNotifierProvider<FilterProvider>(
           create: (context) => FilterProvider(),
         ),
@@ -64,7 +71,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           scaffoldBackgroundColor: Colors.white,
-          accentColor: Colors.white,
+          accentColor: Colors.grey,
           accentColorBrightness: Brightness.light,
           textTheme: TextTheme(
             headline5: TextStyle(
@@ -85,13 +92,17 @@ class MyApp extends StatelessWidget {
             color: Colors.transparent,
             elevation: 0,
             iconTheme: IconThemeData(
-              color: primaryColor,
+              color: grey,
             ),
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: Splash(),
+        home: SplashScreenWidget(),
       ),
     );
   }
 }
+// Todo!
+/* 
+cache user data and address
+ */

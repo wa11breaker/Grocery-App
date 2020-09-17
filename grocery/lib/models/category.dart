@@ -1,17 +1,17 @@
 class Categorys {
-  String name;
+  String title;
   String id;
-  String image;
+  String imgUrl;
   Categorys({
     this.id,
-    this.name,
-    this.image,
+    this.title,
+    this.imgUrl,
   });
   factory Categorys.fromMap(Map data) {
     return Categorys(
-      id: data['categoryId'],
-      name: data['categoryName'],
-      image: data['categoryImage'],
+      id: data['id'],
+      title: data['title'],
+      imgUrl: data['imgUrl'],
     );
   }
 }
